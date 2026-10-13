@@ -1,0 +1,3422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Interactive Accountability Instrument</title>
+<meta name="description" content="The five-step accountability instrument from the World Economic Forum primer Units of Governance, made operable.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* ============================================================
+   The Accountability Instrument
+   Palette is lifted from the primer's own figure sources:
+   03-publication/assets/risk_tier_table.html (tiers, amplifiers),
+   accountability_cycle_5step.html (section colours),
+   controls_table.html (tier tints), governance_record.html (modes).
+   Tier colours are fixed and must not drift.
+   ============================================================ */
+
+:root{
+  /* grounds and ink */
+  --ground:#fbfcfd;
+  --surface:#ffffff;
+  --surface-2:#f7f9fb;
+  --panel:#f1f4f8;
+  --ink:#1c2a3d;
+  --mut:#47515f;
+  --slate:#545e6b;
+  --line:#dde3ea;
+  --line-2:#e8ecf1;
+
+  /* structural navy: display type and dark bands */
+  --display:#14304e;
+  --band:#14304e;
+  --band-ink:#ffffff;
+  --band-mut:#a9c2e6;
+
+  /* the three sections of the instrument */
+  --sec1:#2f5f9e;   /* classification and scope, steps 1-3 */
+  --sec2:#2c8a68;   /* controls and assurance, step 4    */
+  --sec3:#7a4e9e;   /* accountability and record, step 5 */
+  --sec1-tint:#eaf1f8;
+
+  /* selection. the fill or tint says what a thing is;
+     the royal blue box says it is the one chosen. deeper than --sec1
+     so "selected" never reads as "section 1". */
+  --sel:#1b4fa6;
+  --sel-tint:#e9f0fa;
+
+  /* the four risk tiers */
+  --t1:#1f8272; --t2:#d9821f; --t3:#c9453c; --t4:#7a4e9e;
+  --t1t:#e8f3f0; --t2t:#fdf0e0; --t3t:#fbeae8; --t4t:#f1ecf7;
+
+  /* the two amplifiers */
+  --amp:#c2740f;
+  --amp-bg:#fdf4e6;
+  --amp-rule:#e8a552;
+  --no-bg:#f4f6f9;
+
+  --focus:#2f5f9e;
+  --shadow:0 1px 2px rgba(20,48,78,.06), 0 8px 24px rgba(20,48,78,.07);
+  --shadow-sm:0 1px 2px rgba(20,48,78,.08);
+
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0c1622;
+    --surface:#121f2e;
+    --surface-2:#16263a;
+    --panel:#1b2c42;
+    --ink:#e6edf6;
+    --mut:#a6b4c7;
+    --slate:#93a2b6;
+    --line:#27394f;
+    --line-2:#1f3145;
+
+    --display:#e8eff8;
+    --band:#1c3149;
+    --band-ink:#eef4fb;
+    --band-mut:#9db9de;
+
+    --sec1:#5f96d8; --sec2:#46b489; --sec3:#a684cf;
+    --sec1-tint:#15263c;
+
+    --sel:#7fb4f2;
+    --sel-tint:#172c48;
+
+    --t1:#35a894; --t2:#e79a3f; --t3:#e0685f; --t4:#a684cf;
+    --t1t:#10322c; --t2t:#33250f; --t3t:#341c1a; --t4t:#272037;
+
+    --amp:#e0a24f;
+    --amp-bg:#2a2113;
+    --amp-rule:#7c5c29;
+    --no-bg:#152030;
+
+    --focus:#7fb0e8;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+
+:root[data-theme="dark"]{
+  --ground:#0c1622;
+  --surface:#121f2e;
+  --surface-2:#16263a;
+  --panel:#1b2c42;
+  --ink:#e6edf6;
+  --mut:#a6b4c7;
+  --slate:#93a2b6;
+  --line:#27394f;
+  --line-2:#1f3145;
+
+  --display:#e8eff8;
+  --band:#1c3149;
+  --band-ink:#eef4fb;
+  --band-mut:#9db9de;
+
+  --sec1:#5f96d8; --sec2:#46b489; --sec3:#a684cf;
+  --sec1-tint:#15263c;
+
+  --sel:#7fb4f2;
+  --sel-tint:#172c48;
+
+  --t1:#35a894; --t2:#e79a3f; --t3:#e0685f; --t4:#a684cf;
+  --t1t:#10322c; --t2t:#33250f; --t3t:#341c1a; --t4t:#272037;
+
+  --amp:#e0a24f;
+  --amp-bg:#2a2113;
+  --amp-rule:#7c5c29;
+  --no-bg:#152030;
+
+  --focus:#7fb0e8;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit}
+
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+
+/* ---------- shared atoms ---------------------------------- */
+
+.eyebrow{
+  font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--slate);
+}
+
+.lede{color:var(--mut);font-size:16px;max-width:66ch}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px;border-radius:999px;
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* ---------- page frame ------------------------------------ */
+
+.masthead{
+  background:var(--band);
+  color:var(--band-ink);
+  padding:20px 0 18px;
+}
+.masthead .inner{
+  max-width:1320px;margin:0 auto;padding:0 28px;
+}
+.masthead h1{
+  font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.1;
+  letter-spacing:-.01em;
+}
+.masthead .sub{
+  font-family:var(--serif);font-size:17px;color:var(--band-mut);
+  margin-top:4px;max-width:56ch;
+}
+
+.tabs{max-width:1320px;margin:16px auto 0;padding:0 28px}
+.tabs .tabrow{display:flex;gap:4px;justify-content:flex-start;border-bottom:1px solid rgba(255,255,255,.16)}
+.tab{
+  border:0;background:none;cursor:pointer;
+  padding:9px 16px 10px;margin-bottom:-1px;
+  font-size:13px;font-weight:600;color:var(--band-mut);
+  border-bottom:2px solid transparent;
+}
+.tab:hover{color:var(--band-ink)}
+.tab[aria-current="true"]{color:var(--band-ink);border-bottom-color:var(--band-ink)}
+
+/* the record strip: derived state, accumulating across the instrument */
+.strip{
+  position:sticky;top:0;z-index:30;
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow-sm);
+}
+.strip .inner{
+  max-width:1320px;margin:0 auto;padding:0 28px;
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.strip .cell{
+  padding:10px 16px 11px;border-left:1px solid var(--line-2);min-width:0;
+}
+.strip .cell:first-child{border-left:0;padding-left:0}
+.strip .k{
+  font-size:9.5px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--slate);
+}
+.strip .v{
+  font-size:14px;font-weight:600;margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.strip .v.pending{color:var(--slate);font-weight:400;font-style:italic}
+
+@media (max-width:900px){
+  .strip .inner{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip .cell:nth-child(odd){border-left:0;padding-left:0}
+}
+
+.frame{
+  max-width:1320px;margin:0 auto;padding:0 28px 72px;
+  display:grid;grid-template-columns:246px minmax(0,1fr);gap:44px;
+  align-items:start;
+}
+@media (max-width:1040px){
+  .frame{grid-template-columns:minmax(0,1fr);gap:0}
+}
+
+/* ---------- the rail: figure 1, flattened ----------------- */
+
+.rail{position:sticky;top:78px;padding-top:34px}
+@media (max-width:1040px){.rail{display:none}}
+
+.rail .rail-head{font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--slate);margin-bottom:14px}
+
+.track{position:relative;padding-left:6px}
+.track::before{
+  content:"";position:absolute;left:19px;top:14px;bottom:34px;width:2px;
+  background:linear-gradient(var(--sec1) 0%,var(--sec1) 56%,var(--sec2) 56%,var(--sec2) 78%,var(--sec3) 78%);
+  opacity:.32;
+}
+
+.stop{
+  display:flex;gap:13px;align-items:flex-start;
+  padding:7px 8px 7px 0;border:0;background:none;width:100%;text-align:left;
+  cursor:pointer;border-radius:8px;position:relative;
+}
+.stop:hover{background:var(--surface-2)}
+.stop .node{
+  flex:none;width:28px;height:28px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:12.5px;font-weight:700;color:#fff;
+  background:var(--stop-color);
+  box-shadow:0 0 0 4px var(--ground);
+  transition:transform .18s ease;
+}
+.stop[aria-current="true"] .node{transform:scale(1.14)}
+.stop .label{min-width:0;padding-top:1px;display:block}
+.stop .name,.stop .state{display:block}
+.stop .name{font-size:13.5px;font-weight:600;line-height:1.3;color:var(--mut)}
+.stop[aria-current="true"] .name{color:var(--ink)}
+.stop .state{
+  font-size:11.5px;color:var(--slate);line-height:1.35;margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;
+}
+.stop .state.set{color:var(--stop-color);font-weight:600}
+
+.substop{
+  display:block;width:100%;text-align:left;border:0;background:none;cursor:pointer;
+  margin:-2px 0 4px 41px;padding:3px 8px 3px 11px;border-left:2px solid var(--line);
+  font-size:11.5px;color:var(--slate);border-radius:0 6px 6px 0;
+}
+.substop:hover{color:var(--stop-color);border-left-color:var(--stop-color)}
+
+.rail .hub{
+  margin-top:18px;padding:13px 15px;border-radius:10px;
+  background:var(--band);color:var(--band-ink);
+}
+.rail .hub b{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.rail .hub span{display:block;font-size:11.5px;color:var(--band-mut);margin-top:4px;line-height:1.45}
+
+.rail .reset{
+  margin-top:16px;width:100%;padding:8px;border-radius:8px;
+  border:1px solid var(--line);background:var(--surface);color:var(--mut);
+  font-size:12px;cursor:pointer;
+}
+.rail .reset:hover{color:var(--ink);border-color:var(--slate)}
+
+/* ---------- steps ----------------------------------------- */
+
+.step{padding:38px 0 12px;scroll-margin-top:86px}
+.step + .step{border-top:3px solid var(--step-color);padding-top:32px}
+.step:has(.secband){border-top:0}
+
+/* every second section takes the alternate ground */
+.step.alt{
+  background:var(--surface-2);
+  border-radius:14px;
+  padding:38px 22px 20px;
+  margin:0 -22px;
+}
+
+
+/* the section opener. printed at steps 1, 4 and 5 only, so the band itself
+   is the signal that a new section has started */
+.secband{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  margin:0 0 26px;padding:13px 18px;
+  border-top:3px solid var(--c);border-radius:10px;
+  background:var(--surface-2);
+}
+/* a section start is given more air than a step change */
+.step:has(.secband){padding-top:48px}
+.secband .sbn{
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c);
+}
+.secband .sbt{
+  font-family:var(--serif);font-size:21px;font-weight:600;color:var(--display);
+  letter-spacing:-.01em;
+}
+.secband .sbs{
+  font-size:11.5px;color:var(--slate);margin-left:auto;
+  font-weight:600;letter-spacing:.04em;
+}
+@media (max-width:560px){.secband .sbs{margin-left:0}}
+
+.step-head{display:flex;gap:15px;align-items:flex-start;margin-bottom:22px}
+.step-head .num{
+  flex:none;width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;
+  background:var(--step-color);
+}
+.step-head h2{
+  font-family:var(--serif);font-weight:600;font-size:29px;line-height:1.15;
+  color:var(--display);letter-spacing:-.01em;
+}
+.step-head .subt{
+  font-family:var(--serif);font-style:italic;font-weight:600;font-size:17px;
+  color:var(--mut);margin-top:6px;max-width:58ch;
+}
+.step-head .lede{margin-top:7px}
+
+/* the outcome of a step: the royal blue box that closes it and divides it
+   from the next one */
+.stepout{
+  margin:30px 0 4px;padding:16px 20px 15px;
+  border-radius:12px;border:2.5px solid var(--sel);
+  background:var(--sel-tint);
+}
+.stepout.pending{border-color:var(--line);background:var(--surface-2)}
+.stepout .so-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.stepout .so-l{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sel);
+}
+.stepout.pending .so-l{color:var(--slate)}
+.stepout .so-k{font-size:12px;color:var(--slate);font-weight:600;letter-spacing:.03em}
+.stepout .so-v{
+  font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.2;color:var(--display);margin-top:5px;
+}
+.stepout.pending .so-v{color:var(--slate);font-style:italic}
+.stepout .so-b{font-size:13.5px;color:var(--mut);margin-top:5px;max-width:70ch;line-height:1.5}
+.stepout .so-n{
+  margin-top:13px;padding-top:11px;border-top:1px solid var(--sel);
+  font-size:11.5px;font-weight:600;letter-spacing:.05em;color:var(--sel);
+}
+.stepout.pending .so-n{border-top-color:var(--line);color:var(--slate)}
+
+/* generic surfaces */
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:11px;
+}
+.quiet{background:var(--surface-2);border:1px solid var(--line-2);border-radius:10px}
+
+.note{
+  border-left:3px solid var(--step-color);
+  background:var(--surface-2);
+  padding:13px 17px;border-radius:0 9px 9px 0;
+  font-size:14px;color:var(--mut);
+}
+.note b{color:var(--ink);font-weight:600}
+
+
+
+
+
+/* ---------- step 1: the three diagnostic questions --------- */
+
+.funnel{display:flex;flex-direction:column;gap:12px}
+
+.qrow{
+  display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0;
+  border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--surface);
+}
+@media (max-width:760px){.qrow{grid-template-columns:minmax(0,1fr)}}
+
+.qrow.settled{opacity:1}
+.qrow.dormant{opacity:.5}
+
+.qrow .ask{padding:17px 20px;min-width:0}
+.qrow .qn{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;color:var(--sec1);
+}
+.qrow .qt{font-size:15.5px;margin-top:5px;max-width:52ch;line-height:1.45}
+.qrow .answers{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}
+
+.ans{
+  padding:6px 15px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--mut);
+  font-size:13px;font-weight:500;cursor:pointer;
+}
+.ans:hover{border-color:var(--sel);color:var(--ink)}
+.ans[aria-pressed="true"]{
+  background:var(--sel-tint);border-color:var(--sel);color:var(--sel);font-weight:600;
+  box-shadow:0 0 0 1.5px var(--sel);
+}
+.ans:disabled{cursor:not-allowed;opacity:.45}
+
+.qrow .outcome{
+  padding:17px 20px;background:var(--surface-2);border-left:1px solid var(--line-2);
+  display:flex;flex-direction:column;gap:5px;justify-content:center;
+}
+.qrow .outcome .oh{font-size:13.5px;font-weight:700;letter-spacing:.03em;color:var(--ink)}
+.qrow .outcome .ob{font-size:12.5px;color:var(--mut);line-height:1.45}
+.qrow .outcome .on{font-size:11.5px;font-style:italic;color:var(--slate)}
+.qrow.hit .outcome{background:var(--sec1-tint);border-left-color:var(--sec1)}
+.qrow.hit.out .outcome{background:var(--no-bg);border-left-color:var(--line)}
+
+/* ---------- step 2: units of governance -------------------- */
+
+.tests{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.tests{grid-template-columns:minmax(0,1fr)}}
+
+.test{padding:15px 17px;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+.test .tn{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--slate)}
+.test .tt{font-size:14.5px;font-weight:600;margin-top:4px}
+.test .td{font-size:12.5px;color:var(--mut);margin-top:4px;line-height:1.45}
+.test .answers{display:flex;gap:7px;margin-top:11px}
+.test.pass{border-color:var(--sec2);background:var(--surface)}
+.test.fail{border-color:var(--t3)}
+/* selection is the blue box on both answers; the ink carries pass or fail,
+   and the test card's own edge states the outcome */
+.ans.yes[aria-pressed="true"]{color:var(--sec2)}
+.ans.no[aria-pressed="true"]{color:var(--slate)}
+
+.units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.units{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.units{grid-template-columns:minmax(0,1fr)}}
+
+.unit{
+  text-align:left;border:1px solid var(--line);background:var(--surface);
+  border-radius:11px;padding:0;cursor:pointer;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.unit:hover{border-color:var(--unit-color)}
+.unit[aria-pressed="true"]{border-color:var(--sel);box-shadow:0 0 0 2.5px var(--sel)}
+.unit .uh{
+  background:var(--unit-color);color:#fff;padding:8px 13px;
+  display:flex;align-items:center;gap:9px;
+}
+/* the three failure cases are a finding, not an alarm: outline, never a red fill */
+.unit.danger .uh{background:var(--t3t);color:var(--t3);box-shadow:inset 0 0 0 2px var(--t3)}
+.unit.danger .uh .t{font-weight:700}
+.unit .uh .n{
+  width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.24);
+  display:grid;place-items:center;font-size:11px;font-weight:700;flex:none;
+}
+.unit .uh .t{font-size:13.5px;font-weight:600;line-height:1.2}
+.unit .ub{padding:12px 13px;display:flex;gap:11px;align-items:center;flex:1}
+.unit .ub > span:last-child{display:block;min-width:0}
+.unit .glyph{flex:none;color:var(--unit-color);display:block}
+.unit .ut,.unit .ud,.unit .ux{display:block}
+.unit .ut{font-size:11.5px;font-weight:600;color:var(--unit-color);line-height:1.35}
+.unit .ud{font-size:12.5px;color:var(--mut);margin-top:4px;line-height:1.4}
+.unit .ux{
+  font-size:11.5px;color:var(--slate);margin-top:7px;padding-top:7px;
+  border-top:1px dashed var(--line);line-height:1.4;
+}
+.unit .ux b{color:var(--mut);font-weight:600;letter-spacing:.1em;font-size:9.5px}
+
+.diagnosis{margin-top:14px}
+
+/* ---------- step 3: the rubric ----------------------------- */
+
+.rubric-wrap{overflow-x:auto;border-radius:11px;border:1px solid var(--line);background:var(--surface)}
+.rubric{width:100%;min-width:860px;border-collapse:separate;border-spacing:0}
+
+.rubric th,.rubric td{vertical-align:top;text-align:left}
+.rubric td{padding:0}
+
+.rubric .dimhead{
+  padding:11px 15px;background:var(--panel);color:var(--display);
+  font-size:12px;font-weight:700;letter-spacing:.05em;width:236px;
+}
+.rubric .tierhead{
+  padding:11px 14px;color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.04em;
+}
+
+.rubric .sectionbar td{
+  padding:8px 15px;font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+}
+.rubric .sectionbar.dims td{background:var(--panel);color:var(--display);border-top:2px solid var(--display)}
+.rubric .sectionbar.amps td{background:var(--amp-bg);color:var(--amp);border-top:2px solid var(--amp)}
+.rubric .sectionbar em{font-weight:400;letter-spacing:.01em;text-transform:none;color:var(--mut);font-size:12px;margin-left:14px}
+
+.rubric .dimcell{
+  padding:15px;border-top:1px solid var(--line);background:var(--surface-2);
+}
+.rubric .dimcell .dn{font-size:14.5px;font-weight:600}
+.rubric .dimcell .dd{font-size:12.5px;color:var(--mut);margin-top:5px;line-height:1.45}
+.rubric tr.amprow .dimcell{background:var(--amp-bg)}
+
+/* the cell's fill lives on the td so it reaches the full row height;
+   the button inside is a transparent hit area that sets the row height */
+.rubric td.cell{
+  background:var(--surface);
+  border-top:1px solid var(--line);border-left:1px solid var(--line-2);
+}
+.rubric tr.amprow td.cell{background:var(--no-bg)}
+.rubric tr.amprow td.cell.fires{background:var(--amp-bg)}
+.rubric tr.amprow td.divide{border-left:2px solid var(--amp-rule)}
+.rubric td.cell:hover{background:var(--cell-tint)}
+.rubric td.cell.sel{background:var(--cell-tint);box-shadow:inset 0 0 0 2.5px var(--sel)}
+.rubric tr.amprow td.cell.sel{box-shadow:inset 0 0 0 2.5px var(--sel)}
+
+.cellbtn{
+  display:block;width:100%;text-align:left;cursor:pointer;
+  padding:14px 13px;border:0;background:none;
+}
+.cellbtn .cl{
+  font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--cell-color);
+  display:block;margin-bottom:6px;
+}
+.cellbtn .cp{font-size:12.5px;color:var(--ink);line-height:1.4;display:block}
+.cellbtn .cp + .cp{margin-top:6px}
+.cellbtn .gate{
+  display:inline-block;margin-top:9px;padding:3px 9px;border-radius:999px;
+  background:var(--t4);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.1em;
+}
+
+.binband td{padding:0;border-top:1px solid var(--line)}
+.binband .bl{
+  padding:7px 15px;background:var(--amp-bg);font-size:12px;font-style:italic;color:var(--mut);
+}
+.binband .bn,.binband .by{
+  padding:7px 14px;text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.09em;
+}
+.binband .bn{background:var(--no-bg);color:var(--slate)}
+.binband .by{background:var(--amp-bg);color:var(--amp);border-left:2px solid var(--amp-rule)}
+
+/* the derivation readout */
+.derive{
+  margin-top:18px;display:grid;grid-template-columns:minmax(0,1fr) 264px;gap:16px;align-items:start;
+}
+@media (max-width:820px){.derive{grid-template-columns:minmax(0,1fr)}}
+
+.derive .steps{padding:17px 20px;border-radius:11px;border:1px solid var(--line);background:var(--surface)}
+.derive .steps h4{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate)}
+.derive ol{margin:11px 0 0;padding-left:19px;display:flex;flex-direction:column;gap:8px}
+.derive li{font-size:14px;line-height:1.5;color:var(--mut)}
+.derive li b{color:var(--ink);font-weight:600}
+
+.tierplate{
+  border-radius:11px;overflow:hidden;border:1px solid var(--tier-color);background:var(--tier-tint);
+}
+.tierplate .top{background:var(--tier-fill);color:var(--tier-on);padding:15px 18px}
+.tierplate .top .tn{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.tierplate .top .tt{font-family:var(--serif);font-size:28px;font-weight:600;line-height:1.1;margin-top:2px}
+.tierplate .bot{padding:13px 18px;font-size:13px;color:var(--mut);line-height:1.5}
+.tierplate .bot b{color:var(--ink)}
+.tierplate.empty{border-color:var(--line);background:var(--surface-2)}
+.tierplate.empty .top{background:var(--panel);color:var(--slate)}
+.tierplate.empty .top .tt{color:var(--slate);font-size:20px;font-style:italic}
+
+/* ---------- step 4: controls ------------------------------- */
+
+.ctrl-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:900px){.ctrl-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* the tier this step is working from, stated before the layers so the
+   cumulative list is never read as the tier itself */
+.ctrl-tier{
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  margin:0 0 16px;padding:12px 17px;border-radius:10px;
+  background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--tc);
+}
+.ctrl-tier.pending{border-left-color:var(--line)}
+.ctrl-tier .ctl{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);
+}
+.ctrl-tier .ctv{font-family:var(--serif);font-weight:600;font-size:21px;color:var(--tc)}
+.ctrl-tier.pending .ctv{color:var(--slate);font-style:italic;font-size:17px}
+.ctrl-tier .ctn{font-size:12.5px;color:var(--mut);margin-left:auto}
+@media (max-width:760px){.ctrl-tier .ctn{margin-left:0}}
+
+.layers{display:flex;flex-direction:column;gap:9px}
+.layer{
+  border-radius:10px;border:1px solid var(--line);overflow:hidden;background:var(--surface);
+  display:grid;grid-template-columns:104px minmax(0,1fr);
+}
+.layer.off{opacity:.42}
+/* no edge on the tier block: an outline here reads as a selection,
+   and blue alone means selected */
+.layer .lt{
+  background:var(--layer-fill);color:var(--layer-on);padding:13px 12px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center;
+}
+.layer.off .lt{background:var(--panel);color:var(--slate)}
+.layer .lt .n{font-size:14px;font-weight:700}
+.layer .lt .m{font-size:11.5px;opacity:.9}
+.layer .lb{padding:13px 16px;background:var(--layer-tint)}
+.layer.off .lb{background:var(--surface)}
+.layer .lb .add{font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--layer-color);text-transform:uppercase}
+.layer.off .lb .add{color:var(--slate)}
+/* the resolved tier, marked in the selection language used everywhere else */
+.layer.cur{box-shadow:0 0 0 2.5px var(--sel);border-color:var(--sel)}
+.layer .lb .here{
+  margin-left:10px;padding:1px 8px;border-radius:999px;
+  background:var(--sel);color:#fff;font-size:9.5px;letter-spacing:.1em;
+}
+.layer .lb p{font-size:13.5px;line-height:1.5;margin-top:4px;color:var(--ink)}
+.layer.off .lb p{color:var(--mut)}
+
+.aside-stack{display:flex;flex-direction:column;gap:12px}
+.mini{border-radius:10px;border:1px solid var(--line);background:var(--surface);padding:14px 16px}
+.mini h4{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate)}
+.mini .big{font-size:17px;font-weight:600;margin-top:5px;line-height:1.25;color:var(--ink)}
+.mini ul{margin:8px 0 0;padding-left:17px;display:flex;flex-direction:column;gap:5px}
+.mini li{font-size:12.5px;color:var(--mut);line-height:1.45}
+.mini .fine{font-size:11.5px;color:var(--slate);font-style:italic;margin-top:9px;line-height:1.45}
+
+.domains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+@media (max-width:760px){.domains{grid-template-columns:minmax(0,1fr)}}
+.domain{padding:13px 15px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line-2)}
+.domain .dh{font-size:13.5px;font-weight:600;color:var(--sec2)}
+.domain p{font-size:12.5px;color:var(--mut);margin-top:4px;line-height:1.45}
+
+.interrupts{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.interrupts .chip{
+  background:var(--t2t);color:var(--t2);border:1px solid var(--t2);
+  text-transform:none;letter-spacing:0;font-weight:500;font-size:11.5px;
+}
+
+/* ---------- step 5: the record ----------------------------- */
+
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.modes{grid-template-columns:minmax(0,1fr)}}
+
+.mode{border-radius:11px;border:2px solid var(--mode-color);background:var(--surface);overflow:hidden}
+.mode.dim{border-color:var(--line);opacity:.55}
+.mode .mh{
+  background:var(--mode-color);color:#fff;padding:9px 15px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+}
+.mode.dim .mh{background:var(--panel);color:var(--slate)}
+.mode .mh .mt{font-size:13px;font-weight:700;letter-spacing:.09em}
+.mode .mh .mg{font-size:11.5px;font-style:italic;opacity:.85}
+.mode .mb{padding:14px 16px}
+.mode .ms{font-size:13.5px;font-weight:600;color:var(--mode-color)}
+.mode.dim .ms{color:var(--slate)}
+.mode .mn{font-size:11.5px;font-style:italic;color:var(--slate);margin-top:3px}
+.mode ul{margin:10px 0 0;padding-left:17px;display:flex;flex-direction:column;gap:5px}
+.mode li{font-size:12.5px;line-height:1.45;color:var(--mut)}
+.mode .mf{
+  margin:13px -16px -14px;padding:9px 16px;background:var(--mode-tint);
+  font-size:11.5px;font-weight:600;color:var(--mode-color);text-align:center;
+}
+.mode.dim .mf{background:var(--surface-2);color:var(--slate)}
+
+.record{margin-top:16px;border-radius:11px;border:1px solid var(--line);overflow:hidden;background:var(--surface)}
+.record .rh{
+  background:var(--band);color:var(--band-ink);padding:10px 16px;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.record .rh .rt{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.record .rh .rid{font-family:var(--mono);font-size:12px;color:var(--band-mut)}
+
+.field{display:grid;grid-template-columns:214px minmax(0,1fr);border-top:1px solid var(--line-2)}
+.field:first-of-type{border-top:0}
+@media (max-width:620px){.field{grid-template-columns:minmax(0,1fr)}}
+.field .fk{
+  padding:11px 16px;background:var(--surface-2);
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);
+}
+.field .fv{padding:11px 16px;font-size:13.5px;line-height:1.5;min-width:0;overflow-wrap:anywhere}
+.field .fv.pending{color:var(--slate);font-style:italic}
+.field .fv .mono{font-size:12.5px}
+
+.ident{display:flex;align-items:center;gap:14px;padding:14px 16px;border-top:1px solid var(--line-2)}
+.ident .grid{flex:none;display:grid;grid-template-columns:repeat(5,9px);gap:2px}
+.ident .grid i{width:9px;height:9px;border-radius:2px;background:var(--line)}
+.ident .grid i.on{background:var(--mode-color)}
+
+.inputs{display:flex;flex-direction:column;gap:11px;margin-top:14px;max-width:520px}
+.inputs label{display:flex;flex-direction:column;gap:4px}
+.inputs .ik{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)}
+.inputs input{
+  font:inherit;font-size:13.5px;padding:8px 11px;border-radius:8px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+.inputs input:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 22%,transparent)}
+
+.exports{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.btn{
+  padding:8px 16px;border-radius:9px;border:1px solid var(--sec3);
+  background:var(--sec3);color:#fff;font-size:13px;font-weight:600;cursor:pointer;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface);color:var(--sec3)}
+.btn.ghost:hover{background:var(--t4t);filter:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.exports .msg{font-size:12.5px;color:var(--mut)}
+
+/* ---------- worked examples -------------------------------- */
+
+.examples{
+  display:flex;gap:9px;flex-wrap:wrap;align-items:stretch;
+  padding:13px 16px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line-2);
+  margin-top:20px;
+}
+.examples .lbl{
+  flex:0 0 100%;font-size:10.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--slate);margin-bottom:2px;
+}
+.ex{
+  flex:1 1 210px;min-width:0;text-align:left;
+  display:flex;align-items:flex-start;gap:9px;
+  padding:10px 13px;border-radius:10px;
+  border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:12.5px;
+}
+.ex .exb{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ex .exn{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+.ex .exd{font-size:11.5px;color:var(--mut);line-height:1.4}
+.ex:hover{border-color:var(--ex-color)}
+.ex[aria-pressed="true"]{
+  border-color:var(--sel);background:var(--ex-tint);font-weight:600;
+  box-shadow:0 0 0 1.5px var(--sel);
+}
+.ex .dot{width:17px;height:17px;border-radius:50%;background:var(--ex-fill);color:var(--ex-on);
+  box-shadow:inset 0 0 0 1.5px var(--ex-color);
+  display:grid;place-items:center;font-size:9.5px;font-weight:700;flex:none}
+
+
+
+
+/* ---------- panels carried over from the previous guide ----- */
+
+.panel{
+  margin-top:22px;padding:20px 22px;border-radius:12px;
+  border:1px solid var(--line);background:var(--surface);
+}
+.panel-head{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-bottom:7px}
+.panel-head h3{font-family:var(--serif);font-weight:600;font-size:21px;color:var(--display)}
+.panel-head .btn.small{margin-left:auto;padding:5px 13px;font-size:12.5px}
+.panel .lede{font-size:14px;margin-bottom:15px}
+
+.fineprint{font-size:12px;color:var(--slate);line-height:1.5;margin-top:11px}
+.fineprint b{color:var(--mut)}
+
+/* profile fields: a single column of rows, label then choices */
+.phint{margin-left:auto;font-size:11.5px;color:var(--slate)}
+.pnote{font-size:12px;color:var(--slate);margin-top:14px;line-height:1.5}
+
+.pform{margin-top:6px;border-top:1px solid var(--line)}
+
+.pband{
+  padding:13px 0 5px;
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--sec1);
+}
+.pform > .pband:first-child{padding-top:15px}
+
+.prow{padding:11px 0 14px;border-top:1px solid var(--line-2)}
+.pband + .prow{border-top:0}
+.pk{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:9px}
+
+.psel{
+  font:inherit;font-size:13.5px;max-width:380px;width:100%;padding:7px 10px;border-radius:7px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+}
+
+.opts{display:flex;flex-wrap:wrap;gap:6px 10px}
+.opt{
+  display:inline-flex;gap:8px;align-items:flex-start;cursor:pointer;
+  padding:5px 11px 5px 9px;border-radius:7px;border:1px solid var(--line);
+  background:var(--surface);font-size:13px;color:var(--mut);line-height:1.4;
+}
+.opt:hover{border-color:var(--sel);color:var(--ink)}
+.opt input{flex:none;margin:1px 0 0;width:14px;height:14px;accent-color:var(--sel);cursor:pointer}
+.opt:has(input:checked){
+  border-color:var(--sel);background:var(--sel-tint);color:var(--ink);
+  box-shadow:0 0 0 1.5px var(--sel);
+}
+.opt:has(input:checked) > span{font-weight:500}
+
+/* the two rich fields: four choices across, each with a gloss */
+.opts.rich{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
+}
+@media (max-width:980px){.opts.rich{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.opts.rich{grid-template-columns:minmax(0,1fr)}}
+.opts.rich .opt{padding:11px 13px;align-items:flex-start}
+.opts.rich .opt > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.opts.rich b{font-size:13px;font-weight:600;color:var(--rc)}
+.opts.rich em{font-style:normal;font-size:12px;color:var(--mut);line-height:1.4}
+.opts.rich .opt:has(input:checked) em{color:var(--ink)}
+.opts.rich .risk{
+  align-self:flex-start;margin-top:3px;font-style:normal;
+  font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--slate);
+}
+
+/* the proposal table */
+.panel.proposal{border-color:var(--line);background:var(--surface-2)}
+.panel.proposal .btn{background:var(--sec1);border-color:var(--sec1)}
+.ptable{width:100%;border-collapse:collapse}
+.ptable td{padding:9px 12px 9px 0;border-top:1px solid var(--line-2);vertical-align:top;font-size:13px}
+.ptable tr:first-child td{border-top:0}
+.ptable .pn{font-weight:600;width:190px}
+.ptable .pfrom{
+  display:block;font-weight:400;font-size:10.5px;font-style:italic;color:var(--slate);margin-top:2px;
+}
+.ptable .pv{width:168px}
+.ptable .pw{color:var(--mut);line-height:1.45}
+.pnone{color:var(--slate)}
+@media (max-width:760px){
+  .ptable td{display:block;padding:2px 0;border-top:0}
+  .ptable tr{display:block;padding:10px 0;border-top:1px solid var(--line-2)}
+  .ptable .pn,.ptable .pv{width:auto;text-align:left}
+}
+
+/* the crosswalk */
+.ortho{
+  display:grid;grid-template-columns:minmax(0,1fr) 90px minmax(0,1fr);
+  gap:0;align-items:stretch;margin-bottom:14px;
+  border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--surface-2);
+}
+@media (max-width:760px){.ortho{grid-template-columns:minmax(0,1fr)}}
+.ortho .oside{padding:16px 18px;min-width:0}
+.ortho .ok{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate)}
+.ortho .ov{font-family:var(--serif);font-size:23px;line-height:1.15;margin-top:3px;color:var(--display)}
+.ortho .ob{font-size:12.5px;color:var(--mut);margin-top:6px;line-height:1.45}
+.ortho .oc{font-size:11.5px;color:var(--slate);margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);line-height:1.45}
+.ortho .oaxis{
+  display:grid;place-items:center;background:var(--panel);
+  border-left:1px solid var(--line);border-right:1px solid var(--line);
+}
+.ortho .oaxis span{
+  font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);
+  writing-mode:vertical-rl;
+}
+@media (max-width:760px){
+  .ortho .oaxis{padding:5px;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .ortho .oaxis span{writing-mode:horizontal-tb}
+}
+
+.xh{
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--o,var(--slate));
+  margin:22px 0 10px;display:flex;align-items:center;gap:8px;
+}
+.xh::before{
+  content:"";width:9px;height:9px;border-radius:3px;background:var(--o,var(--slate));flex:none;
+}
+.xh .xn{
+  background:color-mix(in srgb, var(--o,var(--slate)) 14%, transparent);
+  color:var(--o,var(--mut));border-radius:999px;padding:1px 8px;
+  font-size:10.5px;letter-spacing:0;
+}
+
+.obligs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:820px){.obligs{grid-template-columns:minmax(0,1fr)}}
+/* --o is the framework's family colour, set per card */
+.oblig{
+  padding:13px 15px;border-radius:10px;background:var(--surface);
+  border:1px solid var(--line-2);border-left:4px solid var(--o,var(--slate));
+}
+.oblig .oh{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.oblig .fw{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--o,var(--display));background:color-mix(in srgb, var(--o,var(--slate)) 11%, transparent);
+  padding:2px 8px;border-radius:5px;white-space:nowrap;
+}
+.oblig .ot{font-size:13.5px;font-weight:600}
+.oblig p{font-size:12.5px;color:var(--mut);margin-top:6px;line-height:1.45}
+
+.thr{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line)}
+.thr .tl{font-size:11.5px;font-weight:600;color:var(--ink);display:block}
+.thr .trow{display:flex;align-items:center;gap:11px;margin-top:6px}
+.thr input[type="range"]{flex:1;min-width:0;accent-color:var(--o,var(--amp))}
+.thr .tv{font-size:12px;font-weight:600;color:var(--o,var(--amp));white-space:nowrap;min-width:74px;text-align:right}
+.thr .th{font-size:11.5px;color:var(--slate);margin-top:5px;line-height:1.4}
+
+.chain{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.chain li{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 13px 7px 7px;border-radius:999px;
+  background:var(--surface-2);border:1px solid var(--line-2);
+}
+.chain .ci{
+  width:19px;height:19px;border-radius:50%;background:var(--sec3);color:#fff;
+  display:grid;place-items:center;font-size:10.5px;font-weight:700;flex:none;
+}
+.chain .ct{font-size:12.5px;color:var(--ink)}
+
+/* ---------- the introduction ------------------------------- */
+
+.frame.solo{grid-template-columns:minmax(0,1fr);gap:0}
+
+.intro{padding:40px 0 20px;max-width:960px}
+.ihero{margin-bottom:38px}
+.ihero .lede{font-size:18px;line-height:1.5;max-width:72ch}
+.ihero .lede2{margin-top:14px}
+
+.cycle{
+  display:flex;gap:0;margin-top:26px;flex-wrap:wrap;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);
+}
+.cnode{
+  flex:1 1 170px;min-width:0;padding:15px 16px;
+  border-left:1px solid var(--line-2);display:flex;gap:11px;align-items:center;
+  border-top:3px solid var(--c);
+}
+.cnode:first-child{border-left:0}
+.cnode .cn{
+  flex:none;width:25px;height:25px;border-radius:50%;background:var(--c);color:#fff;
+  display:grid;place-items:center;font-size:12px;font-weight:700;
+}
+.cnode .cl{font-size:13px;font-weight:600;line-height:1.25}
+.cyclenote{font-size:12.5px;color:var(--slate);font-style:italic;margin-top:10px}
+
+/* headings: one serif scale across the guide.
+   34 masthead, 29 step, 21 section and panel, 18 inside a step.
+   the uppercase micro-labels (.mini h4, .xh, .ih is not one) stay sans. */
+.ih{
+  font-family:var(--serif);font-size:21px;font-weight:600;color:var(--display);
+  letter-spacing:-.01em;margin:34px 0 14px;
+}
+.h-sub{
+  font-family:var(--serif);font-size:18px;font-weight:600;color:var(--display);
+  letter-spacing:-.01em;margin:24px 0 12px;
+}
+
+.iblocks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.iblocks{grid-template-columns:minmax(0,1fr)}}
+.iblock{
+  padding:18px 20px 16px;border-radius:12px;background:var(--surface);
+  border:1px solid var(--line);border-top:3px solid var(--c);
+  display:flex;flex-direction:column;
+}
+.iblock .ibh{display:flex;gap:11px;align-items:center;margin-bottom:9px}
+.iblock .ibn{
+  flex:none;width:27px;height:27px;border-radius:8px;background:var(--c);color:#fff;
+  display:grid;place-items:center;font-size:13px;font-weight:700;
+}
+.iblock .ibt{font-size:15.5px;font-weight:600;line-height:1.2}
+.iblock .ibs{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);margin-top:2px}
+.iblock p{font-size:13.5px;color:var(--mut);line-height:1.5;flex:1}
+.ilink{
+  align-self:flex-start;margin-top:13px;border:0;background:none;cursor:pointer;
+  padding:0;font-size:13px;font-weight:600;color:var(--c);
+}
+.ilink:hover{text-decoration:underline}
+
+.iapply{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px;max-width:80ch}
+.iapply li{font-size:14.5px;color:var(--mut);line-height:1.55}
+.iapply li::marker{color:var(--sec1);font-weight:700}
+
+.istart{
+  margin-top:34px;padding:20px 24px;border-radius:12px;background:var(--band);color:var(--band-ink);
+}
+/* the worked examples live here and nowhere else in the guide */
+.istart-top{
+  display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+}
+.istart .examples{
+  margin-top:18px;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);
+}
+.istart .examples .lbl{color:var(--band-mut)}
+.istart .ist{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+.istart p{font-size:13.5px;color:var(--band-mut);margin-top:5px;max-width:64ch;line-height:1.5}
+.istart .btn{background:var(--band-ink);color:var(--band);border-color:var(--band-ink);flex:none}
+.istart .btn:hover{filter:brightness(.94)}
+
+/* ---------- footer ----------------------------------------- */
+
+.foot{
+  border-top:1px solid var(--line);background:var(--surface);
+  padding:22px 0;margin-top:20px;
+}
+.foot .inner{
+  max-width:1320px;margin:0 auto;padding:0 28px;
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:12px;color:var(--slate);
+}
+.foot a{color:var(--sec1)}
+
+/* ---------- primer alignment, 29 Sep 2026 ------------------ */
+
+/* Figure 5 footers: the oversight model under agency, the unit under reach */
+.cellbtn .cf{
+  display:block;margin-top:9px;padding-top:7px;border-top:1px dashed var(--line);
+  font-size:12px;line-height:1.4;color:var(--mut);
+}
+.cellbtn .cf.carried{color:var(--sel);font-weight:600}
+.cellbtn .cf .from{
+  display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;
+  font-size:10.5px;font-weight:600;letter-spacing:.02em;
+  background:var(--sel-tint);color:var(--sel);box-shadow:inset 0 0 0 1px var(--sel);
+}
+.rubricnote{font-size:12.5px;color:var(--mut);font-style:italic;margin-top:10px;line-height:1.5}
+
+/* the unit carried forward from step 2 */
+.carry{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 14px;
+  padding:10px 14px;border-radius:10px;border:1.5px solid var(--sel);background:var(--sel-tint);
+}
+.carry .ck{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sel)}
+.carry b{font-family:var(--serif);font-weight:600;font-size:17px;color:var(--display)}
+.carry .cn{font-size:12.5px;color:var(--mut)}
+
+/* the optional system profiling, collapsed until opened */
+details.collapsible > summary{list-style:none;cursor:pointer;margin-bottom:0}
+details.collapsible > summary::-webkit-details-marker{display:none}
+details.collapsible > summary::before{
+  content:"";width:9px;height:9px;flex:none;margin-right:2px;
+  border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);
+  transform:rotate(-45deg);transition:transform .15s ease;
+}
+details.collapsible[open] > summary::before{transform:rotate(45deg)}
+details.collapsible[open] > summary{margin-bottom:12px}
+.opt-tag{
+  font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 8px;border-radius:999px;color:var(--mut);box-shadow:inset 0 0 0 1px var(--line);
+}
+.rubric-wrap > .rubricnote{padding:0 14px 12px;margin-top:8px}
+
+/* the whole rubric cell is the click target */
+.rubric td.cell[data-dim],.rubric td.cell[data-amp]{cursor:pointer}
+
+</style>
+
+</head>
+<body>
+<header class="masthead">
+  <div class="inner">
+    <div>
+      <h1>Interactive Accountability Instrument</h1>
+      <p class="sub">A practical accountability guide for agentic AI</p>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Sections of the guide"></nav>
+</header>
+
+<div class="strip" id="strip"></div>
+
+<div class="frame" id="frame">
+  <nav class="rail" id="rail" aria-label="The five steps"></nav>
+  <main id="main"></main>
+</div>
+
+<footer class="foot">
+  <div class="inner">
+    <span>Advisory guidance, not legal advice. A tier is not a legal category. The crosswalk names obligations a unit is <i>likely</i> to engage where its use case is in scope.</span>
+    <span class="mono">Units of Governance &middot; interactive accountability instrument &middot; v1.0</span>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   The Accountability Instrument — the five steps of the WEF primer
+   "Units of Governance: Classifying AI Agents for Accountability",
+   made operable.
+
+   Every rubric descriptor, control, record field and worked example
+   below is the primer's own wording, taken from the figure sources in
+   03-publication/assets. The tiering rule is section 2.4.1 verbatim:
+   the highest of three dimensions sets the base tier; each amplifier
+   that fires raises it one level; either amplifier at its far end sets
+   Tier 4 Critical on its own. There is no hard gate and no control
+   tier — controls are named by the tier that requires them.
+   ============================================================ */
+
+/* ---------- the four tiers -------------------------------- */
+
+/* c = the tier's accent, t = its tint.
+   f / o = what a solid tier surface is painted with, and the ink on it.
+   Tier 3 is never filled: red is carried as an outline and red ink on its
+   own tint, so nothing in the instrument reads as an alarm state. */
+const TIERS = [
+  { n: "Tier 1", name: "Limited",  c: "var(--t1)", t: "var(--t1t)", f: "var(--t1)",  o: "#ffffff" },
+  { n: "Tier 2", name: "Elevated", c: "var(--t2)", t: "var(--t2t)", f: "var(--t2)",  o: "#ffffff" },
+  { n: "Tier 3", name: "High",     c: "var(--t3)", t: "var(--t3t)", f: "var(--t3t)", o: "var(--t3)" },
+  { n: "Tier 4", name: "Critical", c: "var(--t4)", t: "var(--t4t)", f: "var(--t4)",  o: "#ffffff" },
+];
+const tierLabel = i => i == null ? "" : TIERS[i].n + " " + TIERS[i].name;
+/* every solid tier surface carries its own edge, so the unfilled one still reads as a block */
+const tierSurface = i =>
+  "background:" + TIERS[i].f + ";color:" + TIERS[i].o;
+
+/* ---------- step 1: three diagnostic questions ------------- */
+
+const QUESTIONS = [
+  {
+    key: "q1",
+    q: "Is the outcome and every intermediate step prespecified?",
+    yes: {
+      head: "Deterministic automation",
+      body: "Every path and outcome is fixed in advance.",
+      note: "Stop here. Outside the agent taxonomy.",
+      scope: false,
+    },
+  },
+  {
+    key: "q2",
+    q: "Does it only produce content or recommendations, while a human determines and executes every intermediate action, including critical decision making?",
+    yes: {
+      head: "Assistant or copilot",
+      body: "Produces content or recommendations. A human chooses and acts.",
+      note: "Stop here. Outside the agent taxonomy.",
+      scope: false,
+    },
+  },
+  {
+    key: "q3",
+    q: "Does the system decide how to proceed, choose or sequence tools, revise a plan, or manage intermediate state toward an objective?",
+    yes: {
+      head: "Agentic control loop",
+      body: "The system selects actions or tools and manages progress toward an objective.",
+      note: "Governance threshold crossed.",
+      scope: true,
+    },
+  },
+];
+
+/* ---------- step 2: the six units of governance ------------ */
+
+const UNIT_GLYPHS = {
+  agent:
+    '<svg width="62" height="48" viewBox="0 0 62 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6">' +
+    '<path d="M31 26 17 14M31 26 45 14M31 26 31 42"/></g>' +
+    '<circle cx="31" cy="26" r="6" fill="currentColor"/><circle cx="17" cy="14" r="4" fill="currentColor"/>' +
+    '<circle cx="45" cy="14" r="4" fill="currentColor"/><circle cx="31" cy="42" r="4" fill="currentColor"/></svg>',
+  application:
+    '<svg width="62" height="48" viewBox="0 0 62 48" aria-hidden="true">' +
+    '<rect x="4" y="8" width="54" height="32" rx="4" fill="currentColor" opacity=".1"/>' +
+    '<circle cx="16" cy="18" r="4.5" fill="currentColor"/><circle cx="16" cy="31" r="4.5" fill="currentColor" opacity=".55"/>' +
+    '<rect x="29" y="13" width="22" height="10" rx="3" fill="currentColor" opacity=".32"/>' +
+    '<rect x="29" y="26" width="22" height="10" rx="3" fill="currentColor" opacity=".32"/>' +
+    '<g stroke="currentColor" stroke-width="1.4"><path d="M21 18h8M21 31h8M21 19l8 10"/></g></svg>',
+  fleet:
+    '<svg width="62" height="48" viewBox="0 0 62 48" aria-hidden="true">' +
+    '<rect x="5" y="8" width="52" height="32" rx="4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>' +
+    '<circle cx="20" cy="19" r="4.5" fill="currentColor"/><circle cx="42" cy="19" r="4.5" fill="currentColor"/>' +
+    '<circle cx="20" cy="31" r="4.5" fill="currentColor"/><circle cx="42" cy="31" r="4.5" fill="currentColor"/></svg>',
+  mas:
+    '<svg width="62" height="48" viewBox="0 0 62 48" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" fill="none">' +
+    '<path d="M31 15 14 36M31 15 31 36M31 15 48 36"/></g>' +
+    '<circle cx="31" cy="12" r="5.5" fill="currentColor" opacity=".55"/>' +
+    '<circle cx="14" cy="37" r="4.5" fill="currentColor"/><circle cx="31" cy="37" r="4.5" fill="currentColor"/>' +
+    '<circle cx="48" cy="37" r="4.5" fill="currentColor"/></svg>',
+  swarm:
+    '<svg width="62" height="48" viewBox="0 0 62 48" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2" fill="none" opacity=".75">' +
+    '<path d="M31 9 48 21 41 40 21 40 14 21Z"/><path d="M31 9 41 40M31 9 21 40M48 21 21 40M48 21 14 21M41 40 14 21"/></g>' +
+    '<circle cx="31" cy="9" r="4" fill="currentColor"/><circle cx="48" cy="21" r="4" fill="currentColor"/>' +
+    '<circle cx="41" cy="40" r="4" fill="currentColor"/><circle cx="21" cy="40" r="4" fill="currentColor"/>' +
+    '<circle cx="14" cy="21" r="4" fill="currentColor"/></svg>',
+  ecosystem:
+    '<svg width="62" height="48" viewBox="0 0 62 48" aria-hidden="true">' +
+    '<path d="M31 6v36" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" opacity=".6"/>' +
+    '<circle cx="14" cy="24" r="5.5" fill="currentColor"/><circle cx="48" cy="24" r="5.5" fill="currentColor"/>' +
+    '<g stroke="currentColor" stroke-width="1.6"><path d="M21 24h17"/></g>' +
+    '<path d="M38 20.5 44 24l-6 3.5z" fill="currentColor"/></svg>',
+};
+
+const UNITS = [
+  {
+    id: "agent", n: 1, name: "Agent", color: "#14876f",
+    tag: "One control loop",
+    d: "A single control loop, with its own identity, permissions and behaviour. The smallest standalone unit of governance.",
+    ex: "A coding assistant that writes and ships code",
+  },
+  {
+    id: "application", n: 2, name: "Agentic application", color: "#1f5fa8",
+    tag: "One product &middot; one owner",
+    d: "An end-to-end product integrating one or more agents. Governance attaches to the deployment owner and outcome. The agents are components; the application is the unit.",
+    ex: "A customer-refund service (interface + rules + agents)",
+  },
+  {
+    id: "fleet", n: 3, name: "Agent fleet", color: "#17868f",
+    tag: "Many copies &middot; they do not talk",
+    d: "Independent instances operating under a common policy, working separately. Governance focuses on the inventory, the configuration and bulk intervention.",
+    ex: "10,000 support agents, one per account",
+  },
+  {
+    id: "mas", n: 4, name: "Multi-agent system", color: "#6b4c9a",
+    tag: "They talk &middot; a controller is in charge",
+    d: "Agents communicate and coordinate through a controller that directs delegation, orchestration, conflict resolution and intervention, making the system governable as one unit.",
+    ex: "A research desk: a coordinator directs specialists",
+  },
+  {
+    id: "swarm", n: 5, name: "Swarm", color: "#e07b28",
+    tag: "They talk &middot; no controller &middot; emergent",
+    d: "A multi-agent system with no controller, whose behaviour emerges from local interactions. Governance constrains communications and collective action, because the risk is systemic.",
+    ex: "Warehouse robots that self-route, no central control",
+  },
+  {
+    id: "ecosystem", n: 6, name: "Cross-organizational ecosystem", color: "#14707d",
+    tag: "Separate entities &middot; no single controller",
+    d: "Agents of separate legal entities interacting across organizational and jurisdictional boundaries. Several units meeting: each participant governs its own unit, and accountability is assembled at the joins.",
+    ex: "A cross-border refund between two companies",
+  },
+];
+const unitById = id => UNITS.find(u => u.id === id) || null;
+
+const TESTS = [
+  { key: "owner", n: "Test 1", t: "An accountable owner", d: "A named person and organization who answers for what it does." },
+  { key: "envelope", n: "Test 2", t: "An authorization envelope", d: "A written statement of what it may and may not do." },
+  { key: "intervention", n: "Test 3", t: "An enforceable intervention", d: "A means to suspend, constrain or revoke it in its entirety." },
+];
+
+const DIAGNOSES = [
+  {
+    id: "component", t: "It is a component",
+    q: "It sits inside a larger object that does meet all three.",
+    a: "Govern the parent. The agents inside an application are the common example.",
+  },
+  {
+    id: "split", t: "It is more than one unit",
+    q: "It spans more than one owner, or more than one authorization envelope.",
+    a: "Split it into the parts that do fit, govern each, and govern the joins by agreement.",
+  },
+  {
+    id: "gap", t: "It is a gap",
+    q: "No parent and no part supplies what is missing.",
+    a: "Establish the owner, the authorization envelope or the intervention mechanism before the system operates. Record it as a finding.",
+  },
+];
+
+/* ---------- step 3: the rubric (primer figure 7) ----------- */
+
+const DIMS = [
+  {
+    key: "agency", name: "Agency",
+    def: "Level of independent decision making and delegation of decision making.",
+    cells: [
+      { label: "Instruct · no discretion", p: ["Follows explicit instructions", "No planning, sequencing, or choice of method"], foot: "Human oversight: HITL · in the loop (high)" },
+      { label: "Assist · human confirms", p: ["Chains predefined steps", "Limited branching logic", "Human confirms key actions"], foot: "Human oversight: HITL · in the loop (high)" },
+      { label: "Execute · human on call", p: ["Plans multi-step sequences", "Selects tools and methods unprompted", "Discretion over how, not whether"], foot: "Human oversight: HOTL · on the loop (medium)" },
+      { label: "Delegate · operates independently", p: ["Sets and revises its own sub-goals", "Delegates work to other agents", "No human in the loop at the moment of action"], foot: "Human oversight: HIC · in command (low)" },
+    ],
+  },
+  {
+    key: "impact", name: "Impact",
+    def: "Severity of harms when the system does not perform as intended.",
+    cells: [
+      { p: ["Low impact", "Fully reversible"] },
+      { p: ["Limited consequences", "Easily corrected"] },
+      { p: ["Significant impact", "Difficult to reverse"] },
+      { p: ["Severe impact", "Irreversible harm to rights, safety, or finances"] },
+    ],
+  },
+  {
+    key: "reach", name: "Reach",
+    def: "Scope of systems, data, or parties affected.",
+    cells: [
+      { p: ["Single isolated system or dataset", "No other system, team, or party touched"], foot: "Unit of governance: Agent", units: ["agent"] },
+      { p: ["Multiple internal systems", "Within one business unit"], foot: "Unit of governance: Agentic application · Agent fleet", units: ["application", "fleet"] },
+      { p: ["External systems or regulated data"], foot: "Unit of governance: Multi-agent system", units: ["mas"] },
+      { p: ["Open-ended ecosystem", "Cross-organizational or public reach"], foot: "Unit of governance: Swarm · Cross-organizational ecosystem", units: ["swarm", "ecosystem"] },
+    ],
+  },
+];
+
+/* the oversight model read off the agency cell, as in the primer's Figure 5 */
+const OVERSIGHT = [
+  "HITL · human in the loop (high)", "HITL · human in the loop (high)",
+  "HOTL · human on the loop (medium)", "HIC · human in command (low)",
+];
+const oversightModel = () => S.dims.agency == null ? null : OVERSIGHT[S.dims.agency];
+
+const AMPS = [
+  {
+    key: "coordination", name: "Coordination complexity",
+    def: "Is the unit coordinating with other agents?",
+    gate: "Agents coordinating with no central controller sets Tier 4 Critical on its own.",
+    cells: [
+      { p: ["Single agent", "No delegation to or from other agents"] },
+      { p: ["Sequential workflow", "Single low complexity action"] },
+      { p: ["Supervised orchestration"] },
+      { p: ["Swarm behaviour", "No central controller"] },
+    ],
+  },
+  {
+    key: "trust", name: "Trust boundary exposure",
+    def: "Is the unit acting outside a boundary it controls?",
+    gate: "Delegation across a boundary the organization does not control sets Tier 4 Critical on its own.",
+    cells: [
+      { p: ["Single trust boundary", "One organization, one system"] },
+      { p: ["Inside the organization's own systems", "Own authorization environment"] },
+      { p: ["Cross-platform"] },
+      { p: ["Cross-jurisdiction"] },
+    ],
+  },
+];
+
+/* ---------- step 4: controls, assurance, record, crosswalk -- */
+
+const CONTROL_LAYERS = [
+  {
+    controls: "Inventory entry with a named owner; approved tools and data access documented and limited to the minimum necessary; basic activity logging; a manual kill switch or disable mechanism; testing that confirms intended performance; the owner self-assesses the risk classification.",
+    assurance: "Self-assessment",
+    record: "Governance identity",
+    cross: ["EU AI Act: voluntary codes of conduct.", "NIST AI RMF: Govern and Map.", "ISO/IEC 42001 in place."],
+  },
+  {
+    controls: "Testing against defined success criteria, including basic adversarial or edge-case scenarios; approval from a reviewer outside the development team; monitoring dashboards against set thresholds with a documented escalation process; a second party validates the risk classification; staff can raise a concern outside the system's own owner.",
+    assurance: "Internal assurance",
+    record: "Governance identity",
+    cross: ["EU AI Act: transparency obligations.", "NIST AI RMF: + Measure.", "ISO/IEC 23894; ISO/IEC 42005."],
+  },
+  {
+    controls: "Independent evaluation before deployment and at regular intervals, by a function separate from developers and owners; mandatory human approval for high-impact or irreversible actions; real-time guardrails that block, limit or reverse actions; continuous automated monitoring of policy compliance; protected internal reporting channels.",
+    assurance: "Independent third party",
+    record: "Verifiable governance credential",
+    cross: ["EU AI Act: high-risk obligations where in scope, including conformity assessment.", "NIST AI RMF: + Manage.", "ISO/IEC 42001 assessed."],
+  },
+  {
+    controls: "Continuous oversight and independent certification; pre-authorization; circuit breakers that require human approval to resume; tamper-evident logs and a complete audit trail; regular validation by a fully independent body; named accountable individuals and reporting lines to the board or regulators; mandatory incident disclosure and cross-party incident coordination; audit rights; recertification on any material change to models, prompts, tools or scope.",
+    assurance: "Continuous and audited",
+    record: "Two-sided passport, entered in the registry",
+    cross: ["EU AI Act: serious-incident reporting.", "NIST AI RMF: all four functions, continuously.", "ISO/IEC 42001 certified."],
+  },
+];
+
+/* section 3.3 — what each aggregation adds that the tier alone does not cover */
+const UNIT_CONTROLS = {
+  agent: ["The tiered controls apply as written."],
+  application: [
+    "Align exposed capabilities with the agent's authorization envelope.",
+    "Enforce application-layer change control.",
+  ],
+  fleet: [
+    "Maintain a consolidated inventory and risk view.",
+    "Monitor for drift.",
+    "Enforce consistent versions and policies.",
+  ],
+  mas: [
+    "Assign a system-level accountable owner or orchestrator.",
+    "Maintain verifiable delegation chains.",
+    "Monitor emergent behaviour.",
+  ],
+  swarm: [
+    "Monitor population-level behaviour.",
+    "Cap aggregate authority.",
+    "Maintain a kill switch that halts the entire swarm.",
+  ],
+  ecosystem: [
+    "Require portable, verifiable credentials or agent passports.",
+    "Interoperable incident reporting and audit trails.",
+    "Clear liability, revocation and jurisdiction arrangements.",
+  ],
+};
+
+/* section 3.2 — the seven control domains */
+const DOMAINS = [
+  ["Risk management system", "AI risk assessment scored against agency, impact and reach; AI impact assessment; data protection impact assessment where personal data is involved."],
+  ["Human oversight", "A person can understand, intervene and correct, with defined interrupt conditions."],
+  ["Quality control system", "Pre-deployment scenario testing, tested rollback, change management on any material update."],
+  ["Recordkeeping", "From an agent card to a full audit trail across every coordinating or boundary-crossing party."],
+  ["Audit and logging", "Standard logs to tamper-evident logging; self-attestation to external third-party audit."],
+  ["Technical controls", "Least-privilege access, action whitelisting, kill switches, trust boundary enforcement."],
+  ["Monitoring", "Continuous observation, escalating to population-level tracking of aggregate behaviour."],
+];
+
+/* section 3.1 — escalators are runtime interrupt conditions, not tiers */
+const INTERRUPTS = [
+  "A defined threshold is crossed",
+  "Anomalous output detected",
+  "An action exceeding a set value",
+  "An action exceeding a set scope",
+  "A detected policy violation",
+];
+
+/* ---------- step 5: the governance record ------------------ */
+
+const IDENTITY_CLAIMS = [
+  "Agent + version ID",
+  "Responsible org / deployment owner",
+  "Declared function &amp; system form",
+  "Current authorization &amp; prohibited actions",
+  "Approved tools &amp; data classes",
+];
+const PASSPORT_CLAIMS = [
+  "Cryptographic binding to controlling org",
+  "Country of the controlling org (ISO 3166-1)",
+  "Applicable jurisdiction &amp; trust boundary",
+  "Verifiable credential, no bilateral setup",
+  "Assurance recognised across parties",
+  "Validity, revocation, incident endpoint",
+];
+
+/* ---------- worked examples (primer appendix, FinOps) ------ */
+
+const EXAMPLES = [
+  {
+    id: "t1", tier: 0, title: "Refund-reason summarizer",
+    blurb: "Drafts a weekly summary of refund reasons. Takes no action.",
+    scenario: "An agent reads closed refund cases and drafts a weekly summary of refund reasons for the FinOps team. It writes into a draft document and shares nothing automatically.",
+    how: "All three dimensions sit at the floor. Tier 1 is the only tier where they must agree, because any dimension above it lifts the unit out.",
+    seed: {
+      scope: { q1: "no", q2: "no", q3: "yes" },
+      tests: { owner: "yes", envelope: "yes", intervention: "yes" },
+      unit: "agent",
+      dims: { agency: 0, impact: 0, reach: 0 },
+      amps: { coordination: 0, trust: 0 },
+      profile: { domain: "finance", regions: ["eu"], data: "operational", agencyMode: 0,
+        caps: [], conseq: [], substrate: "proprietary", modelRegion: "same",
+        dataIp: ["residency", "notrain"], delegatesOut: false },
+      system: "Refund-reason summarizer", owner: "FinOps operations lead", org: "Example Bank",
+    },
+  },
+  {
+    id: "t2", tier: 1, title: "Settlement reconciliation agent",
+    blurb: "Matches payouts to ledger entries and drafts corrections for an analyst.",
+    scenario: "An agent reconciles refunds against settlement files, matches each payout to a ledger entry, and drafts the journal corrections for an analyst to post. It cannot post anything itself.",
+    how: "Agency and reach reach Tier 2. Impact sits at Tier 1 and does not pull the tier down: the rule takes the highest, never the average.",
+    seed: {
+      scope: { q1: "no", q2: "no", q3: "yes" },
+      tests: { owner: "yes", envelope: "yes", intervention: "yes" },
+      unit: "agent",
+      dims: { agency: 1, impact: 0, reach: 1 },
+      amps: { coordination: 1, trust: 1 },
+      profile: { domain: "finance", regions: ["eu"], data: "operational", agencyMode: 1,
+        caps: ["tools"], conseq: ["records"], substrate: "proprietary", modelRegion: "same",
+        dataIp: ["residency", "notrain"], delegatesOut: false },
+      system: "Settlement reconciliation agent", owner: "Head of financial control", org: "Example Bank",
+    },
+  },
+  {
+    id: "t3", tier: 2, title: "Straight-through refund payout",
+    blurb: "Issues refunds below a set value end to end, escalating above it.",
+    scenario: "An agent resolves straightforward claims end to end: it reads the claim, applies refund policy, and issues the payout when the claim is below a set value. Above that value it escalates.",
+    how: "Impact reads Tier 2 on small payout values. Agency and reach both reach Tier 3, and the base tier follows the highest dimension, so the tier is Tier 3 High.",
+    seed: {
+      scope: { q1: "no", q2: "no", q3: "yes" },
+      tests: { owner: "yes", envelope: "yes", intervention: "yes" },
+      unit: "agent",
+      dims: { agency: 2, impact: 1, reach: 2 },
+      amps: { coordination: 0, trust: 1 },
+      profile: { domain: "finance", regions: ["eu"], data: "pii", agencyMode: 2,
+        caps: ["tools", "people"], conseq: ["funds", "records"], substrate: "proprietary",
+        modelRegion: "same", dataIp: ["residency", "notrain"], delegatesOut: false },
+      system: "Straight-through refund payout", owner: "Claims operations lead", org: "Example Bank",
+    },
+  },
+  {
+    id: "t4", tier: 3, title: "Cross-border disputed refund",
+    blurb: "Settles disputed liability by delegating to a third-party agent in another jurisdiction.",
+    scenario: "The bank's claim agent and its financial crime agent coordinate under the bank's orchestrator to agree liability and settle. Settlement is delegated to the merchant's settlement agent, a third-party agent the bank does not own or control, operating in another jurisdiction.",
+    how: "The unit is the bank's own multi-agent system: one owner, one envelope, one way to suspend it. The third-party agent sits outside that envelope. No dimension reaches Tier 4, and both amplifiers apply, so the arrangement carries the risk that no single dimension does.",
+    seed: {
+      scope: { q1: "no", q2: "no", q3: "yes" },
+      tests: { owner: "yes", envelope: "yes", intervention: "yes" },
+      unit: "mas",
+      dims: { agency: 2, impact: 2, reach: 2 },
+      amps: { coordination: 2, trust: 3 },
+      profile: { domain: "finance", regions: ["eu", "us"], data: "pii", agencyMode: 2,
+        caps: ["tools", "multiAgent", "thirdParty", "people"], conseq: ["funds", "sharing", "irreversible"],
+        substrate: "proprietary", modelRegion: "same", dataIp: ["residency"], delegatesOut: true },
+      system: "Cross-border disputed refund", owner: "Global head of disputes", org: "Example Bank",
+    },
+  },
+  {
+    id: "proc", tier: 3, title: "Multi-agent procurement",
+    blurb: "Negotiates with a supplier\u2019s sales agent and pays once terms are agreed.",
+    scenario: "A company deploys an agentic AI system to manage vendor procurement. It evaluates bids, negotiates pricing terms with a supplier's own AI sales agent, and executes payment once terms are agreed. It escalates to a human only if a deal exceeds a preset threshold.",
+    how: "All three dimensions reach Tier 3. The first amplifier raises the unit to Tier 4; the second would have set Tier 4 regardless of what the dimensions reached. Two independent routes reach the same answer.",
+    seed: {
+      scope: { q1: "no", q2: "no", q3: "yes" },
+      tests: { owner: "yes", envelope: "yes", intervention: "yes" },
+      unit: "mas",
+      dims: { agency: 2, impact: 2, reach: 2 },
+      amps: { coordination: 2, trust: 3 },
+      profile: { domain: "general", regions: ["eu"], data: "operational", agencyMode: 2,
+        caps: ["tools", "multiAgent", "thirdParty"], conseq: ["funds", "comms", "irreversible"],
+        substrate: "proprietary", modelRegion: "same", dataIp: ["notrain"], delegatesOut: true },
+      system: "Vendor procurement system", owner: "Chief procurement officer", org: "Example Manufacturing",
+    },
+  },
+];
+
+/* ============================================================
+   State
+   ============================================================ */
+
+const blank = () => ({
+  scope: { q1: null, q2: null, q3: null },
+  tests: { owner: null, envelope: null, intervention: null },
+  diagnosis: null,
+  unit: null,
+  dims: { agency: null, impact: null, reach: null },
+  amps: { coordination: null, trust: null },
+  system: "", owner: "", org: "",
+  profile: {
+    domain: null,
+    regions: [],
+    data: null,
+    agencyMode: null,
+    caps: [],
+    conseq: [],
+    substrate: null,
+    modelRegion: null,
+    dataIp: [],
+    delegatesOut: false,
+  },
+  thresholds: {},
+  example: null,
+});
+
+let PROFILE_OPEN = false;
+let VIEW = /^#(instrument|step[1-5]|profile|crosswalk)$/.test(location.hash) ? "instrument" : "intro";
+if (location.hash === "#profile") PROFILE_OPEN = true;
+let S = blank();
+
+function loadExample(id) {
+  const ex = EXAMPLES.find(e => e.id === id);
+  if (!ex) return;
+  S = blank();
+  S.example = id;
+  Object.assign(S, {
+    scope: { ...ex.seed.scope },
+    tests: { ...ex.seed.tests },
+    unit: ex.seed.unit,
+    dims: { ...ex.seed.dims },
+    amps: { ...ex.seed.amps },
+    system: ex.seed.system, owner: ex.seed.owner, org: ex.seed.org,
+    profile: { ...blank().profile, ...ex.seed.profile },
+  });
+}
+
+/* ============================================================
+   The system profile. It does not set the tier: it proposes rubric
+   scores, confirmed or overridden in step 3, and it feeds the
+   regulatory crosswalk in step 4.
+   ============================================================ */
+
+const PF = {
+  domain: [
+    ["finance", "Banking and finance"], ["healthcare", "Healthcare and life sciences"],
+    ["employment", "Employment and HR"], ["insurance", "Insurance"],
+    ["public", "Public sector and essential services"], ["retail", "Retail and consumer"],
+    ["general", "General / cross-industry"],
+  ],
+  regions: [
+    ["eu", "European Union"], ["us", "United States"], ["uk", "United Kingdom"],
+    ["sg", "Singapore / APAC"], ["global", "Other / global"],
+  ],
+  data: [
+    ["none", "No personal data"], ["operational", "Operational data only"],
+    ["pii", "Personal data"], ["sensitive", "Special-category or regulated data"],
+  ],
+  agencyMode: [
+    ["Instruct", "Follows explicit instructions"],
+    ["Assist", "Chains steps; a human confirms"],
+    ["Execute", "Plans and acts; a human is on call"],
+    ["Delegate", "Sets its own sub-goals; no human at the moment of action"],
+  ],
+  caps: [
+    ["tools", "Uses external tools or APIs"], ["memory", "Persistent memory or self-improvement"],
+    ["multiAgent", "Coordinates with other agents"], ["public", "Public-facing or untrusted input"],
+    ["thirdParty", "Third-party models or tools"], ["people", "Decides about, or scores, people"],
+    ["generative", "Generates free-form content"],
+  ],
+  conseq: [
+    ["funds", "Moving funds or payments"], ["comms", "External communications"],
+    ["access", "Granting or changing access"], ["records", "Deleting or modifying records"],
+    ["override", "Overriding a human decision"], ["irreversible", "Irreversible transactions"],
+    ["sharing", "Sharing personal or sensitive data"], ["autotool", "Autonomous tool or API calls"],
+  ],
+  dataIp: [
+    ["residency", "Data-residency guarantee"], ["notrain", "No-train commitment"],
+    ["retention", "Defined retention and deletion limits"],
+  ],
+  modelRegion: [
+    ["same", "Same as the operating jurisdictions"], ["eu", "European Union"], ["us", "United States"],
+    ["uk", "United Kingdom"], ["sg", "Singapore / APAC"], ["global", "Multi-region"], ["unknown", "Unknown / provider default"],
+  ],
+};
+
+const SUBSTRATE = [
+  { id: "proprietary", label: "Proprietary hosted (frontier API)",
+    custody: "Weights held by the provider; inference operated by the provider.",
+    withdrawal: "high",
+    note: "Access can be withdrawn unilaterally: deprecation, price or term change, export controls, sanctions." },
+  { id: "openext", label: "Open-weight, externally hosted",
+    custody: "Open weights, but this inference endpoint is operated by a third party.",
+    withdrawal: "medium",
+    note: "The weights can be re-hosted, but the current endpoint can still be withdrawn or repriced." },
+  { id: "openself", label: "Open-weight, self-hosted or on-premises",
+    custody: "Weights held and inference operated by the deploying organization.",
+    withdrawal: "low",
+    note: "No unilateral withdrawal. Patching, safety tuning and evaluation belong to the deploying organization." },
+  { id: "sovereign", label: "Sovereign or national model",
+    custody: "Weights and inference under a specific national jurisdiction's control.",
+    withdrawal: "medium",
+    note: "Custody and access are governed by that state's law, procurement and export controls." },
+];
+
+const REGULATED = ["finance", "healthcare", "employment", "insurance", "public"];
+
+const has = (list, k) => list.indexOf(k) !== -1;
+const P = () => S.profile;
+/* the profile is optional: it stays collapsed until opened, and the panels
+   that read from it appear once it holds an answer */
+const profileTouched = () => {
+  const p = S.profile;
+  return !!(p.domain || p.regions.length || p.data || p.agencyMode != null || p.caps.length ||
+    p.conseq.length || p.substrate || p.modelRegion || p.dataIp.length || p.delegatesOut);
+};
+
+/* ---------- what the profile proposes for the rubric -------- */
+
+function proposals() {
+  const p = P();
+  const u = S.unit;
+  const regulated = has(REGULATED, p.domain);
+  const out = {};
+
+  if (p.agencyMode != null) {
+    out.agency = {
+      level: p.agencyMode,
+      why: "The profile says the system " + lower(PF.agencyMode[p.agencyMode][1]) + ".",
+    };
+  }
+
+  /* impact: what happens when it is wrong, not how often */
+  let impact = 0, iwhy = "Nothing consequential was declared, so a failure is informational.";
+  if (p.conseq.length) { impact = 1; iwhy = "It can act on records or communications, so a failure is correctable but real."; }
+  if (["funds", "access", "override", "irreversible"].some(k => has(p.conseq, k))) {
+    impact = 2;
+    iwhy = "It can move money, change access or override a person, which is costly and slow to unwind.";
+  }
+  if (has(p.conseq, "irreversible") && regulated) {
+    impact = 3;
+    iwhy = "Irreversible action in a regulated domain puts rights, safety or finances beyond recovery.";
+  }
+  out.impact = { level: impact, why: iwhy };
+
+  /* reach: how far its actions travel */
+  let reach = 0, rwhy = "One system, one dataset, nothing else touched.";
+  if (has(p.caps, "tools")) { reach = 1; rwhy = "It reaches multiple internal systems through its tools."; }
+  if (p.data === "pii" || p.data === "sensitive" || has(p.caps, "thirdParty")) {
+    reach = 2;
+    rwhy = "It touches regulated data or systems outside its own boundary.";
+  }
+  if (has(p.caps, "public") || u === "ecosystem" || p.regions.length > 1) {
+    reach = 3;
+    rwhy = "Public exposure or more than one jurisdiction makes the reach open-ended.";
+  }
+  out.reach = { level: reach, why: rwhy };
+
+  /* coordination complexity: read off the unit of governance */
+  let coord = 0, cwhy = "A single agent with no delegation to or from other agents.";
+  if (has(p.caps, "multiAgent")) { coord = 1; cwhy = "It coordinates with other agents in a sequential workflow."; }
+  if (u === "mas" || u === "ecosystem") { coord = 2; cwhy = "Agents coordinate under a controller or orchestrator."; }
+  if (u === "swarm") { coord = 3; cwhy = "A swarm with no central controller. The intervention point is gone."; }
+  out.coordination = { level: coord, why: cwhy };
+
+  /* trust boundary exposure. Where inference runs is a supply-chain
+     question, not a delegation of action, so the substrate is read in
+     step 4 and deliberately left out of this amplifier. */
+  let trust = 0, twhy = "One organization, one system, one trust boundary.";
+  if (has(p.caps, "tools") || p.data === "pii" || p.data === "sensitive") {
+    trust = 1;
+    twhy = "It acts inside the organization's own authorization environment.";
+  }
+  if (has(p.caps, "thirdParty") || has(p.caps, "public")) {
+    trust = 2;
+    twhy = "It acts through platforms or parties outside its own boundary.";
+  }
+  if (p.delegatesOut || u === "ecosystem") {
+    trust = 3;
+    twhy = "It delegates action across a boundary the organization does not control.";
+  }
+  out.trust = { level: trust, why: twhy };
+
+  return out;
+}
+
+/* ============================================================
+   The regulatory crosswalk. Regulation classifies by USE CASE; the
+   instrument classifies by agency, impact and reach. Both are
+   shown, never merged.
+   ============================================================ */
+
+function crosswalk() {
+  const p = P();
+  const mandatory = [], safeguards = [], frameworks = [];
+  const r = p.regions.length ? p.regions : ["global"];
+  const inEU = has(r, "eu"), inUS = has(r, "us"), inUK = has(r, "uk"), inSG = has(r, "sg");
+  const affectsPeople = has(p.caps, "people") || p.domain === "employment";
+  const regulated = has(REGULATED, p.domain);
+  const transacts = has(p.conseq, "funds") || has(p.conseq, "irreversible");
+  const autonomous = p.agencyMode != null && p.agencyMode >= 2;
+  const fullyAutonomous = p.agencyMode === 3;
+
+  /* the use-case tier, in the EU AI Act's own vocabulary */
+  let useTier = "Minimal risk", useBasis = "Limited-impact use; transparency remains good practice.";
+  if (regulated && (affectsPeople || autonomous)) {
+    useTier = "High risk";
+    useBasis = "Automated decisions affecting people in a regulated domain: an EU AI Act Annex III class.";
+  } else if (affectsPeople && fullyAutonomous) {
+    useTier = "High risk";
+    useBasis = "Fully autonomous decisions about individuals.";
+  } else if (has(p.caps, "generative")) {
+    useTier = "Limited risk";
+    useBasis = "Generative output requires user-facing disclosure.";
+  }
+
+  if (inEU) {
+    mandatory.push({ fw: "EU AI Act", t: "Obligations by risk class",
+      why: useTier === "High risk"
+        ? "This use falls in an Annex III high-risk category: risk management, logging, human oversight and conformity assessment are required."
+        : "Operating in the EU brings the system under the EU AI Act; obligations scale with its class (" + useTier + ")." });
+    if (p.data !== "none") mandatory.push({ fw: "GDPR", t: "Lawful processing and data-subject rights",
+      why: "Personal data of EU individuals: lawful basis, minimisation and DPIA obligations apply." });
+    if (p.domain === "finance" || p.domain === "insurance") mandatory.push({ fw: "EU DORA", t: "Digital operational resilience",
+      why: "Financial-sector systems must meet ICT risk-management and third-party resilience requirements, AI vendors included." });
+    if (p.domain === "healthcare") mandatory.push({ fw: "EU MDR", t: "Medical device software conformity",
+      why: "Healthcare AI acting on patients may qualify as a medical device requiring CE conformity." });
+  }
+  if (inUS) {
+    if (p.domain === "healthcare" && p.data !== "none") mandatory.push({ fw: "HIPAA", t: "Protected health information safeguards",
+      why: "US health data triggers the Privacy and Security Rules." });
+    if (p.domain === "employment") mandatory.push({ fw: "NYC Local Law 144", t: "Bias audit for automated employment tools",
+      why: "Automated employment decision tools used on NYC candidates require an annual independent bias audit." });
+    if (p.domain === "finance") {
+      mandatory.push({ fw: "SR 11-7", t: "Model risk management",
+        why: "US banking supervisors expect formal model validation, governance and monitoring for decision models." });
+      if (transacts) mandatory.push({ fw: "BSA / OFAC", t: "AML and sanctions compliance",
+        why: "Systems moving funds must screen against sanctions lists and monitor for money-laundering typologies." });
+    }
+    if (affectsPeople) mandatory.push({ fw: "Colorado AI Act", t: "High-risk consumer AI duties",
+      why: "Reasonable care to avoid algorithmic discrimination, and disclosure of the system's use." });
+  }
+  if (inUK && p.data !== "none") mandatory.push({ fw: "UK GDPR / DPA 2018", t: "Data protection and fairness",
+    why: "UK personal-data processing must satisfy UK GDPR, ICO guidance on AI, and fairness and transparency duties." });
+  if (inSG && p.data !== "none") mandatory.push({ fw: "Singapore PDPA", t: "Personal data protection obligations",
+    why: "Consent, purpose-limitation and protection duties apply to personal data processed in Singapore." });
+
+  const thr = (id, label, value, min, max, step, unit, help) => ({ id, label, value, min, max, step, unit, help });
+
+  if (transacts || p.domain === "finance") {
+    safeguards.push({ fw: "Sanctions screening", t: "Watchlist match enforcement",
+      why: "Block or hold transactions matching sanctioned parties.",
+      thr: thr("sanctions", "Match confidence to flag", 85, 50, 100, 1, "%", "Raise to reduce false positives; lower to widen the net.") });
+    safeguards.push({ fw: "AML monitoring", t: "Transaction risk scoring",
+      why: "Flag structuring, layering and anomalous flows.",
+      thr: thr("aml", "Alert risk score", 70, 0, 100, 1, "score", "Transactions at or above this raise an alert.") });
+  }
+  if (autonomous) safeguards.push({ fw: "Human oversight", t: "Escalation and handback",
+    why: "Route low-confidence or high-impact actions to a person.",
+    thr: thr("escalate", "Minimum confidence to auto-proceed", 80, 0, 100, 1, "%", "Below this, the agent must escalate to a human reviewer.") });
+  if (fullyAutonomous) safeguards.push({ fw: "Autonomy boundary", t: "Scope and spend limits",
+    why: "Cap the risk of any single autonomous action.",
+    thr: thr("ceiling", "Maximum autonomous action risk", 60, 0, 100, 1, "score", "Actions above this ceiling require pre-authorization.") });
+  if (affectsPeople) safeguards.push({ fw: "Fairness monitoring", t: "Disparate-impact guardrail",
+    why: "Detect adverse impact across protected groups.",
+    thr: thr("fairness", "Minimum fairness ratio", 80, 50, 100, 1, "ratio", "Below the four-fifths ratio, flag potential disparate impact.") });
+  if (has(p.caps, "generative")) {
+    safeguards.push({ fw: "Groundedness", t: "Hallucination guardrail",
+      why: "Require responses to be supported by retrieved evidence.",
+      thr: thr("ground", "Minimum groundedness", 85, 0, 100, 1, "%", "Responses below this are held for review or regenerated.") });
+    safeguards.push({ fw: "Content safety", t: "Prompt-injection and output filter",
+      why: "Block unsafe output and injected instructions.",
+      thr: thr("safety", "Block sensitivity", 75, 0, 100, 1, "%", "Higher blocks more aggressively, at the cost of recall.") });
+  }
+  if (p.data === "pii" || p.data === "sensitive") safeguards.push({ fw: "Data protection", t: "Personal data detection and redaction",
+    why: "Detect and mask personal data in prompts and outputs.",
+    thr: thr("pii", "Detection sensitivity", 90, 0, 100, 1, "%", "Higher catches more, with more false positives.") });
+  if (has(p.caps, "multiAgent") || S.unit === "mas" || S.unit === "swarm" || S.unit === "ecosystem") {
+    safeguards.push({ fw: "Agent trust", t: "Agent-to-agent authorization",
+      why: "Constrain how far one agent may delegate authority.",
+      thr: thr("depth", "Maximum delegation depth", 2, 1, 5, 1, "hops", "Limits chained delegation between agents.") });
+    safeguards.push({ fw: "Auditability", t: "Cross-agent audit trail",
+      why: "Every inter-agent action is logged and traceable. An attestation control, with no threshold.", thr: null });
+  }
+
+  /* voluntary packs are adopted at a level the organization sets,
+     so each one carries the commitment it is being held to */
+  if (inUS || has(r, "global")) frameworks.push({ fw: "NIST AI RMF", t: "Voluntary risk-management framework",
+    why: "Map, measure and manage AI risk: the reference baseline for US and global programmes.",
+    thr: thr("nist", "Functions adopted", 4, 1, 4, 1, "of 4", "Govern, Map, Measure and Manage. Fewer functions narrows the programme.") });
+  frameworks.push({ fw: "ISO/IEC 42001", t: "AI management system",
+    why: "A certifiable management-system standard demonstrating governance maturity to partners and regulators.",
+    thr: thr("iso42001", "Re-certification interval", 12, 6, 36, 6, "months", "Shorter intervals hold the certificate closer to the deployment as it changes.") });
+  frameworks.push({ fw: "OECD AI Principles", t: "Trustworthy-AI values",
+    why: "Internationally endorsed principles: human-centred, transparent, accountable AI.",
+    thr: thr("oecd", "Interactions carrying an AI-use disclosure", 80, 0, 100, 5, "%", "Raise to widen transparency; below full coverage, record which interactions are exempt.") });
+  if (inSG) frameworks.push({ fw: "Singapore Model AI Governance Framework", t: "Practical governance guidance",
+    why: "Voluntary but widely adopted APAC guidance on operationalising responsible AI.",
+    thr: thr("sgmgf", "Automated decisions sampled for human review", 10, 0, 100, 5, "%", "Raise to sample more decisions after the fact, independent of live escalation.") });
+
+  return { useTier, useBasis, regions: r, mandatory, safeguards, frameworks };
+}
+
+/* supply-chain controls derived from the model substrate */
+function substrateControls() {
+  const p = P();
+  const sub = SUBSTRATE.find(s => s.id === p.substrate);
+  const out = [];
+  if (p.substrate != null && p.substrate !== "openself") out.push({
+    t: "Model-supply-chain continuity plan",
+    why: "Weights or inference sit outside the organization's custody and access can be withdrawn. Keep a fallback model, an exit plan and pinned versions.",
+  });
+  if ((p.data === "pii" || p.data === "sensitive") && p.substrate !== "openself") out.push({
+    t: "Data-residency and no-train enforcement",
+    why: "Personal or sensitive data leaves the organization's custody for external inference. Enforce residency, no-train and retention limits by contract, and verify the hosting jurisdiction.",
+  });
+  if (p.modelRegion != null && p.modelRegion !== "same" && p.modelRegion !== "unknown") out.push({
+    t: "Cross-jurisdiction model-hosting review",
+    why: "The model is hosted in a different jurisdiction from where the agent operates. Assess cross-border transfer, conflicting legal orders and sovereignty obligations.",
+  });
+  if (p.modelRegion === "unknown") out.push({
+    t: "Establish the model-hosting jurisdiction",
+    why: "The hosting jurisdiction is unknown, so cross-border transfer and sovereignty obligations cannot be assessed. Establish it before authorization.",
+  });
+  return { sub, controls: out };
+}
+
+const thresholdValue = (t) => S.thresholds[t.id] != null ? S.thresholds[t.id] : t.value;
+
+/* ============================================================
+   Derivations — section 2.4.1 of the primer, exactly
+   ============================================================ */
+
+function scopeVerdict() {
+  const { q1, q2, q3 } = S.scope;
+  if (q1 === "yes") return { at: 0, ...QUESTIONS[0].yes };
+  if (q1 !== "no") return null;
+  if (q2 === "yes") return { at: 1, ...QUESTIONS[1].yes };
+  if (q2 !== "no") return null;
+  if (q3 === "yes") return { at: 2, ...QUESTIONS[2].yes };
+  if (q3 === "no") {
+    return {
+      at: 2, scope: false, ambiguous: true,
+      head: "Ambiguous",
+      body: "A system that fits none of the three is ambiguous.",
+      note: "Decompose it into parts and classify each one.",
+    };
+  }
+  return null;
+}
+const inScope = () => { const v = scopeVerdict(); return !!(v && v.scope); };
+
+function testsState() {
+  const vals = TESTS.map(t => S.tests[t.key]);
+  if (vals.some(v => v == null)) return "incomplete";
+  return vals.every(v => v === "yes") ? "pass" : "fail";
+}
+
+const dimValues = () => DIMS.map(d => S.dims[d.key]);
+const dimsComplete = () => dimValues().every(v => v != null);
+const baseTier = () => dimsComplete() ? Math.max(...dimValues()) : null;
+
+const fires = v => v != null && v >= 2;          /* Tier 3 or above */
+const farEnd = v => v === 3;                      /* the rightmost cell */
+const ampsComplete = () => AMPS.every(a => S.amps[a.key] != null);
+
+function finalTier() {
+  if (!dimsComplete() || !ampsComplete()) return null;
+  if (AMPS.some(a => farEnd(S.amps[a.key]))) return 3;
+  const raises = AMPS.filter(a => fires(S.amps[a.key])).length;
+  return Math.min(3, baseTier() + raises);
+}
+
+function derivation() {
+  const out = [];
+  if (!dimsComplete()) { out.push("Score all three dimensions to set a base tier."); return out; }
+  const vals = dimValues();
+  const base = baseTier();
+  const highest = DIMS.filter((d, i) => vals[i] === base).map(d => d.name.toLowerCase());
+  out.push(
+    "The base tier is <b>" + tierLabel(base) + "</b>, the highest tier reached by any dimension: " +
+    joinList(highest) + ". The rule is the highest, not the average."
+  );
+  out.push("Human oversight at the moment of action, read from agency: <b>" + oversightModel() + "</b>.");
+  if (!ampsComplete()) { out.push("Answer both amplifiers to resolve the tier."); return out; }
+
+  let running = base;
+  AMPS.forEach(a => {
+    const v = S.amps[a.key];
+    if (farEnd(v)) {
+      out.push(
+        "<b>" + a.name + "</b>: yes, at its far end: " + lower(a.cells[3].p[0]) +
+        ". That sets <b>Tier 4 Critical</b> on its own, whatever the dimensions reached."
+      );
+      running = 3;
+    } else if (fires(v)) {
+      const before = running;
+      running = Math.min(3, running + 1);
+      out.push(
+        "<b>" + a.name + "</b>: yes, " + lower(a.cells[v].p[0]) + ". That raises the unit one level" +
+        (before === running ? ", but Tier 4 Critical is the maximum." : ", to <b>" + tierLabel(running) + "</b>.")
+      );
+    } else {
+      out.push("<b>" + a.name + "</b>: no, " + lower(a.cells[v].p[0]) + ". The tier is unchanged.");
+    }
+  });
+
+  const f = finalTier();
+  const routes = AMPS.filter(a => farEnd(S.amps[a.key])).length;
+  out.push(
+    "The tier is <b>" + tierLabel(f) + "</b>." +
+    (routes > 1 ? " Two independent routes reach the same answer, and that is worth recording: the tier does not rest on a single judgement call." : "")
+  );
+  return out;
+}
+
+const recordMode = () => fires(S.amps.trust) ? "passport" : "identity";
+
+function joinList(a) {
+  if (a.length === 1) return a[0];
+  if (a.length === 2) return a[0] + " and " + a[1];
+  return a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+}
+const lower = s => s.charAt(0).toLowerCase() + s.slice(1);
+const article = s => ("aeiou".indexOf(s.charAt(0).toLowerCase()) === -1 ? "a " : "an ") + s;
+
+/* a short, stable identifier derived from the record's own content */
+function unitRef() {
+  const seed = (S.system || "unnamed") + "|" + (S.org || "") + "|" + (S.unit || "");
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }
+  const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, "0");
+  const u = unitById(S.unit);
+  const pre = u ? u.id.slice(0, 3).toUpperCase() : "UOG";
+  return pre + "-" + hex.slice(0, 4) + "-" + hex.slice(4);
+}
+
+/* ============================================================
+   Rendering
+   ============================================================ */
+
+const esc = s => String(s == null ? "" : s)
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;");
+
+const $ = sel => document.querySelector(sel);
+
+const STEPS = [
+  { n: 1, id: "step1", sec: 1, name: "Agentic solution classification", short: "Classification" },
+  { n: 2, id: "step2", sec: 1, name: "Unit of governance", short: "Unit" },
+  { n: 3, id: "step3", sec: 1, name: "Risk-tiering", short: "Risk tier" },
+  { n: 4, id: "step4", sec: 2, name: "Controls and assurance", short: "Controls" },
+  { n: 5, id: "step5", sec: 3, name: "Governance recordkeeping", short: "Record" },
+];
+const SEC_COLOR = { 1: "var(--sec1)", 2: "var(--sec2)", 3: "var(--sec3)" };
+/* docked to the step of the instrument each one belongs to */
+const SUBSTOPS = { 2: ["profile", "Agentic system profiling"], 4: ["crosswalk", "Regulatory crosswalk"] };
+
+/* ---------- the introduction ------------------------------- */
+
+const SECTIONS = [
+  {
+    n: 1, sec: 1, title: "Classification and scope", steps: "Steps 1 to 3", to: "step1",
+    cue: "Start at step 1",
+    desc: "Decide whether agent-specific governance applies, name the bounded unit that will be held accountable, and score its risk on agency, impact and reach. The unit carries forward into the rubric, and the human oversight model is read at the moment of action. Two amplifiers, coordination complexity and trust boundary exposure, can raise the result to the final risk tier.",
+  },
+  {
+    n: 2, sec: 2, title: "Controls and assurance", steps: "Step 4", to: "step4",
+    cue: "See what the tier requires",
+    desc: "The tier sets the minimum controls and the assurance level in one decision. Controls are cumulative: each tier includes everything below it. Assurance strengthens across five dimensions: oversight, recordkeeping, testing, enforcement and monitoring. The optional system profile adds a regulatory crosswalk for the sectors and jurisdictions in scope.",
+  },
+  {
+    n: 3, sec: 3, title: "Accountability and record", steps: "Step 5", to: "step5",
+    cue: "Open the record",
+    desc: "One living record for the unit: what is governed, who owns it, what it may do, how risk is managed, and who answers at each link of the accountability chain. It holds an agent profile for each deployment inside the unit. A unit crossing a boundary outside its organization's control presents the same record as an agent passport.",
+  },
+];
+
+const APPLY = [
+  "Run steps 1 to 3 when a deployment needs its unit of governance named and its risk tier assigned, before it scales.",
+  "Open the optional agentic system profiling to have a tiering proposed, then confirm or override each score against the rubric.",
+  "Open the regulatory crosswalk once a pilot is being readied for production and the obligations by jurisdiction and sector are needed.",
+  "Export the governance record to provision controls, or hand it to compliance and audit as the authorization evidence.",
+  "Re-run the instrument whenever the unit's authority, scope, data or operating environment materially changes. The record is living, not a sign-off artefact.",
+];
+
+function cycleStrip() {
+  return '<div class="cycle">' + STEPS.map(s =>
+    '<div class="cnode" style="--c:' + SEC_COLOR[s.sec] + '">' +
+    '<span class="cn">' + s.n + '</span><span class="cl">' + s.name + '</span></div>').join("") +
+    '</div><p class="cyclenote">A continuous cycle, not a checklist: re-certified and re-assessed at intervals, and on material change.</p>';
+}
+
+function intro() {
+  return '<section class="intro">' +
+    '<div class="ihero">' +
+    '<p class="lede">Every agentic system needs one answer before it acts: who is accountable? This instrument provides it. ' +
+    'It turns the primer <i>Units of Governance</i> into a hands-on workflow that takes an agentic system from idea to scaled deployment, ' +
+    'with its risk tiered, owned and controlled. ' +
+    'Each step maps to a stage of the agent life cycle, and every answer builds a governance record that carries into operation.</p>' +
+    '</div>' +
+
+    '<h3 class="ih">At a high level, the instrument has three sections</h3>' +
+    '<div class="iblocks">' + SECTIONS.map(b =>
+      '<div class="iblock" style="--c:' + SEC_COLOR[b.sec] + '">' +
+      '<div class="ibh"><span class="ibn">' + b.n + '</span>' +
+      '<div><div class="ibt">' + b.title + '</div><div class="ibs">' + b.steps + '</div></div></div>' +
+      '<p>' + b.desc + '</p>' +
+      '<button class="ilink" type="button" data-goto="' + b.to + '" data-tab="instrument">' + b.cue + ' &rarr;</button>' +
+      '</div>').join("") + '</div>' +
+
+    '<h3 class="ih">How to apply it in practice</h3>' +
+    '<ol class="iapply">' + APPLY.map(a => '<li>' + a + '</li>').join("") + '</ol>' +
+
+    '<div class="istart">' +
+    '<div class="istart-top">' +
+    '<div><div class="ist">Five worked examples</div>' +
+    '<p>The instrument opens unscored. Selecting an example loads it across all five steps.</p></div>' +
+    '<button class="btn" type="button" data-tab="instrument" data-goto="step1">Open the instrument</button>' +
+    '</div>' +
+    examplePicker() +
+    '</div>' +
+    '</section>';
+}
+
+function renderTabs() {
+  const tabs = [["intro", "Introduction"], ["instrument", "The instrument"]];
+  $("#tabs").innerHTML = '<div class="tabrow">' + tabs.map(([id, label]) =>
+    '<button class="tab" type="button" data-tab="' + id + '" aria-current="' + (VIEW === id) + '">' +
+    label + '</button>').join("") + '</div>';
+}
+
+function render() {
+  const focused = document.activeElement && document.activeElement.dataset
+    ? document.activeElement.dataset.fkey : null;
+  const scrolled = window.scrollY;
+  const onIntro = VIEW === "intro";
+
+  renderTabs();
+  $("#strip").hidden = onIntro;
+  $("#rail").hidden = onIntro;
+  $("#frame").classList.toggle("solo", onIntro);
+
+  if (onIntro) {
+    $("#main").innerHTML = intro();
+    if (focused == null) window.scrollTo(0, scrolled);
+    return;
+  }
+
+  renderStrip();
+  renderRail();
+  $("#main").innerHTML = [
+    section1(), section2(), section3(), section4(), section5(),
+  ].join("");
+
+  window.scrollTo(0, scrolled);
+  if (focused) {
+    const el = document.querySelector('[data-fkey="' + CSS.escape(focused) + '"]');
+    if (el) el.focus({ preventScroll: true });
+  }
+  observeSteps();
+}
+
+/* ---------- the record strip ------------------------------- */
+
+function renderStrip() {
+  const v = scopeVerdict();
+  const u = unitById(S.unit);
+  const base = baseTier();
+  const f = finalTier();
+  const firing = AMPS.filter(a => fires(S.amps[a.key]));
+
+  const cells = [
+    ["Scope", v ? v.head : null],
+    ["Unit of governance", u ? u.name : null],
+    ["Base tier", base == null ? null : tierLabel(base)],
+    ["Amplifiers", !ampsComplete() ? null :
+      (firing.length === 0 ? "Neither applies"
+        : firing.map(a => a.key === "coordination" ? "Coordination" : "Trust boundary").join(" + ") +
+          (AMPS.some(a => farEnd(S.amps[a.key])) ? " · far end" : ""))],
+    ["Risk tier", f == null ? null : tierLabel(f)],
+  ];
+
+  $("#strip").innerHTML = '<div class="inner">' + cells.map(([k, val], i) => {
+    const color = i === 4 && f != null ? TIERS[f].c : i === 2 && base != null ? TIERS[base].c : "";
+    return '<div class="cell"><div class="k">' + k + '</div>' +
+      '<div class="v' + (val ? "" : " pending") + '"' + (color ? ' style="color:' + color + '"' : "") + '>' +
+      esc(val || "Not yet set") + '</div></div>';
+  }).join("") + '</div>';
+}
+
+/* ---------- the rail --------------------------------------- */
+
+function railState(n) {
+  const v = scopeVerdict();
+  const u = unitById(S.unit);
+  const f = finalTier();
+  if (n === 1) return v ? v.head : null;
+  if (n === 2) return u ? u.name : null;
+  if (n === 3) return f == null ? null : tierLabel(f);
+  if (n === 4) return f == null ? null : TIERS[f].name + " controls";
+  if (n === 5) return f == null ? null : (recordMode() === "passport" ? "Passport mode" : "Identity mode");
+  return null;
+}
+
+function renderRail() {
+  $("#rail").innerHTML =
+    '<div class="rail-head">The instrument</div><div class="track">' +
+    STEPS.map(s => {
+      const st = railState(s.n);
+      const main = '<button class="stop" type="button" data-goto="' + s.id + '" data-step="' + s.n + '"' +
+        ' style="--stop-color:' + SEC_COLOR[s.sec] + '">' +
+        '<span class="node">' + s.n + '</span>' +
+        '<span class="label"><span class="name">' + s.name + '</span>' +
+        '<span class="state' + (st ? " set" : "") + '">' + esc(st || "—") + '</span></span></button>';
+      const sub = SUBSTOPS[s.n];
+      return main + (sub
+        ? '<button class="substop" type="button" data-goto="' + sub[0] + '" style="--stop-color:' +
+          SEC_COLOR[s.sec] + '">' + sub[1] + '</button>'
+        : "");
+    }).join("") +
+    '</div>' +
+    '<div class="hub"><b>Continuous assurance</b><span>Re-certify and re-assess at intervals, and whenever capability, authority or deployment context materially changes.</span></div>' +
+    '<button class="reset" type="button" data-action="reset">Clear and start from scratch</button>';
+}
+
+/* ---------- step heads ------------------------------------- */
+
+/* the step name is fixed; the italic line beneath says what the step does */
+function head(n, sub) {
+  return '<div class="step-head"><div class="num">' + n + '</div><div>' +
+    '<h2>' + STEPS[n - 1].name + '</h2>' +
+    (sub ? '<div class="subt">' + sub + '</div>' : "") +
+    '</div></div>';
+}
+
+/* a section opener, printed only where a new section begins: steps 1, 4 and 5 */
+const BAND_CONTENTS = {
+  1: "Steps 1 to 3 &middot; Agentic system profiling",
+  2: "Step 4",
+  3: "Step 5",
+};
+function band(sec) {
+  const b = SECTIONS[sec - 1];
+  return '<div class="secband" style="--c:' + SEC_COLOR[sec] + '">' +
+    '<span class="sbn">Section ' + b.n + ' of 3</span>' +
+    '<span class="sbt">' + b.title + '</span>' +
+    '<span class="sbs">' + BAND_CONTENTS[sec] + '</span></div>';
+}
+
+/* what a step leaves behind, carried into the next one. also the divider
+   between steps: nothing else on the page is a royal blue box of this size */
+function stepout(n, label, value, body) {
+  const next = STEPS[n];
+  return '<div class="stepout' + (value ? "" : " pending") + '">' +
+    '<div class="so-head"><span class="so-l">Outcome of step ' + n + '</span>' +
+    '<span class="so-k">' + label + '</span></div>' +
+    '<div class="so-v">' + (value || "Not yet set") + '</div>' +
+    (body ? '<div class="so-b">' + body + '</div>' : "") +
+    (next ? '<div class="so-n">Carries into step ' + next.n + ': ' + next.name + '</div>' : "") +
+    '</div>';
+}
+/* sections alternate their ground, so a section change is visible before it is read */
+const open = (n) => '<section class="step' + (STEPS[n - 1].sec % 2 === 0 ? " alt" : "") +
+  '" id="' + STEPS[n - 1].id + '" style="--step-color:' + SEC_COLOR[STEPS[n - 1].sec] + '">';
+
+/* ---------- step 1 ----------------------------------------- */
+
+function section1() {
+  const v = scopeVerdict();
+  const reached = { q1: true, q2: S.scope.q1 === "no", q3: S.scope.q1 === "no" && S.scope.q2 === "no" };
+
+  const rows = QUESTIONS.map((Q, i) => {
+    const live = reached[Q.key];
+    const ans = S.scope[Q.key];
+    const hit = ans === "yes";
+    const cls = "qrow" + (live ? "" : " dormant") + (hit ? " hit" : "") + (hit && !Q.yes.scope ? " out" : "");
+    return '<div class="' + cls + '">' +
+      '<div class="ask">' +
+      '<div class="qn">QUESTION ' + (i + 1) + '</div>' +
+      '<p class="qt">' + Q.q + '</p>' +
+      '<div class="answers">' +
+      '<button class="ans" type="button" data-fkey="q-' + Q.key + '-yes" data-scope="' + Q.key + '" data-val="yes"' +
+      ' aria-pressed="' + (ans === "yes") + '"' + (live ? "" : " disabled") + '>Yes</button>' +
+      '<button class="ans neg" type="button" data-fkey="q-' + Q.key + '-no" data-scope="' + Q.key + '" data-val="no"' +
+      ' aria-pressed="' + (ans === "no") + '"' + (live ? "" : " disabled") + '>No</button>' +
+      '</div></div>' +
+      '<div class="outcome">' +
+      '<div class="oh">' + Q.yes.head + '</div>' +
+      '<div class="ob">' + Q.yes.body + '</div>' +
+      '<div class="on">' + Q.yes.note + '</div>' +
+      '</div></div>';
+  }).join("");
+
+  return open(1) +
+    band(1) +
+    head(1, "Whether agent-specific governance applies here") +
+    '<div class="funnel">' + rows + '</div>' +
+    stepout(1, "Scope", v ? v.head : null,
+      v ? v.body + " " + v.note
+        : "Answer in order. Obligations attach only on a yes to question 3.") +
+    '</section>';
+}
+
+/* ---------- step 2 ----------------------------------------- */
+
+function section2() {
+  const state = testsState();
+  const u2 = unitById(S.unit);
+
+  const tests = TESTS.map(t => {
+    const a = S.tests[t.key];
+    return '<div class="test' + (a === "yes" ? " pass" : a === "no" ? " fail" : "") + '">' +
+      '<div class="tn">' + t.n + '</div>' +
+      '<div class="tt">' + t.t + '</div>' +
+      '<div class="td">' + t.d + '</div>' +
+      '<div class="answers">' +
+      '<button class="ans yes" type="button" data-fkey="t-' + t.key + '-yes" data-test="' + t.key + '" data-val="yes" aria-pressed="' + (a === "yes") + '">Yes</button>' +
+      '<button class="ans no" type="button" data-fkey="t-' + t.key + '-no" data-test="' + t.key + '" data-val="no" aria-pressed="' + (a === "no") + '">No</button>' +
+      '</div></div>';
+  }).join("");
+
+  let diagnosis = "";
+  if (state === "fail") {
+    const missed = TESTS.filter(t => S.tests[t.key] === "no").map(t => lower(t.t));
+    diagnosis = '<div class="diagnosis"><div class="note"><b>Not a unit of governance.</b> ' +
+      'Missing ' + joinList(missed) + '. Three cases follow.</div>' +
+      '<div class="tests" style="margin-top:12px">' + DIAGNOSES.map(d => {
+        const on = S.diagnosis === d.id;
+        return '<button class="unit danger" type="button" data-fkey="dg-' + d.id + '" data-diagnosis="' + d.id + '" aria-pressed="' + on + '"' +
+          ' style="--unit-color:var(--t3)">' +
+          '<span class="uh"><span class="t">' + d.t + '</span></span>' +
+          '<span class="ub" style="display:block"><span class="ut">' + d.q + '</span>' +
+          '<span class="ud">' + d.a + '</span></span></button>';
+      }).join("") + '</div></div>';
+  }
+
+  const units = UNITS.map(u => {
+    const on = S.unit === u.id;
+    return '<button class="unit" type="button" data-fkey="u-' + u.id + '" data-unit="' + u.id + '" aria-pressed="' + on + '" style="--unit-color:' + u.color + '">' +
+      '<span class="uh"><span class="n">' + u.n + '</span><span class="t">' + u.name + '</span></span>' +
+      '<span class="ub"><span class="glyph">' + UNIT_GLYPHS[u.id] + '</span>' +
+      '<span style="min-width:0"><span class="ut">' + u.tag + '</span></span></span></button>';
+  }).join("");
+
+  return open(2) +
+    head(2, "What exactly is being held accountable") +
+    '<h3 class="h-sub">Does the object pass all three tests?</h3>' +
+    '<div class="tests">' + tests + '</div>' +
+    diagnosis +
+    (state === "pass"
+      ? '<div class="note" style="margin-top:14px"><b>It is a unit of governance.</b> Govern the smallest object that passes all three tests. Where an object fails a test, govern at the next level up.</div>'
+      : "") +
+    '<h3 class="h-sub">Which aggregation is it?</h3>' +
+    '<div class="units">' + units + '</div>' +
+    profilePanel() +
+    stepout(2, "Unit of governance", u2 ? u2.name : null,
+      u2 ? u2.d : "Pass the three tests, then name the aggregation.") +
+    '</section>';
+}
+
+/* ---------- step 3 ----------------------------------------- */
+
+function rubricCell(row, i, isAmp) {
+  const key = row.key;
+  const cur = isAmp ? S.amps[key] : S.dims[key];
+  const cell = row.cells[i];
+  const color = isAmp ? "var(--amp)" : TIERS[i].c;
+  const tint = isAmp ? "var(--amp-bg)" : TIERS[i].t;
+
+  const tdCls = ["cell"];
+  if (cur === i) tdCls.push("sel");
+  if (isAmp && i >= 2) tdCls.push("fires");
+  if (isAmp && i === 2) tdCls.push("divide");
+
+  /* the whole cell answers a click, not only the button's text: short cells
+     (one line of text) otherwise leave most of their area unresponsive */
+  return '<td class="' + tdCls.join(" ") + '" style="--cell-color:' + color + ';--cell-tint:' + tint + '"' +
+    ' data-' + (isAmp ? "amp" : "dim") + '="' + key + '" data-level="' + i + '">' +
+    '<button class="cellbtn" type="button" data-fkey="c-' + key + '-' + i + '"' +
+    ' data-' + (isAmp ? "amp" : "dim") + '="' + key + '" data-level="' + i + '"' +
+    ' aria-pressed="' + (cur === i) + '">' +
+    (cell.label ? '<span class="cl">' + cell.label + '</span>' : "") +
+    cell.p.map(p => '<span class="cp">' + p + '</span>').join("") +
+    (cell.foot ? '<span class="cf' + (cell.units && cell.units.includes(S.unit) ? " carried" : "") + '">' + cell.foot +
+      (cell.units && cell.units.includes(S.unit) ? '<span class="from">From step 2</span>' : "") + '</span>' : "") +
+    (isAmp && i === 3 ? '<span class="gate">SETS TIER 4 ALONE</span>' : "") +
+    '</button></td>';
+}
+
+function section3() {
+  const rowsFor = (list, isAmp) => list.map(r =>
+    '<tr' + (isAmp ? ' class="amprow"' : "") + '>' +
+    '<td class="dimcell"><div class="dn">' + r.name + '</div><div class="dd">' + r.def + '</div></td>' +
+    r.cells.map((c, i) => rubricCell(r, i, isAmp)).join("") +
+    '</tr>').join("");
+
+  const f = finalTier();
+  const base = baseTier();
+
+  const plate = f == null
+    ? '<div class="tierplate empty"><div class="top"><div class="tn">Risk tier</div><div class="tt">Not yet resolved</div></div>' +
+      '<div class="bot">Score the three dimensions and answer both amplifiers.</div></div>'
+    : '<div class="tierplate" style="--tier-color:' + TIERS[f].c + ';--tier-tint:' + TIERS[f].t +
+      ';--tier-fill:' + TIERS[f].f + ';--tier-on:' + TIERS[f].o + '">' +
+      '<div class="top"><div class="tn">Risk tier</div><div class="tt">' + tierLabel(f) + '</div></div>' +
+      '<div class="bot">Base tier <b>' + tierLabel(base) + '</b> from the dimensions' +
+      (f > base ? ', raised by the amplifiers.' : '. The amplifiers did not raise it.') +
+      '</div></div>';
+
+  const u3 = unitById(S.unit);
+  return open(3) +
+    head(3, "Scoring agency, impact and reach to set the tier") +
+    (u3 ? '<div class="carry"><span class="ck">Unit of governance from step 2</span><b>' + u3.name + '</b>' +
+      '<span class="cn">Marked on the Reach row below.</span></div>' : "") +
+    '<div class="rubric-wrap"><table class="rubric">' +
+    '<thead><tr><th class="dimhead">Risk dimension</th>' +
+    TIERS.map((t, i) => '<th class="tierhead" style="' + tierSurface(i) + '">' + t.n + ": " + t.name + '</th>').join("") +
+    '</tr></thead><tbody>' +
+    '<tr class="sectionbar dims"><td colspan="5">Three dimensions<em>scored across the four tiers &middot; the highest one reached sets the tier</em></td></tr>' +
+    rowsFor(DIMS, false) +
+    '<tr class="sectionbar amps"><td colspan="5">Two amplifiers<em>answered yes or no &middot; each yes raises the tier one level</em></td></tr>' +
+    rowsFor(AMPS, true) +
+    '</tbody></table>' +
+    '<p class="rubricnote">Amplifiers only raise the tier. A \u201cyes\u201d at the far right of either amplifier makes the unit Tier 4, whatever the dimensions scored.</p>' +
+    '</div>' +
+    (profileTouched() ? proposalPanel() : "") +
+    '<div class="derive">' +
+    '<div class="steps"><h4>How this tier was reached</h4><ol>' +
+    derivation().map(d => '<li>' + d + '</li>').join("") +
+    '</ol></div>' + plate + '</div>' +
+    stepout(3, "Risk tier", f == null ? null : tierLabel(f),
+      f == null ? "Score the three dimensions and answer both amplifiers."
+        : "Base tier " + tierLabel(base) + " from the dimensions" +
+          (f > base ? ", raised by the amplifiers." : ". The amplifiers did not raise it.")) +
+    '</section>';
+}
+
+/* ---------- step 4 ----------------------------------------- */
+
+function section4() {
+  const f = finalTier();
+
+  const layers = CONTROL_LAYERS.map((L, i) => {
+    const on = f != null && i <= f;
+    const cur = f != null && i === f;
+    return '<div class="layer' + (on ? "" : " off") + (cur ? " cur" : "") + '" style="--layer-color:' + TIERS[i].c + ';--layer-tint:' + TIERS[i].t +
+      ';--layer-fill:' + TIERS[i].f + ';--layer-on:' + TIERS[i].o + '">' +
+      '<div class="lt"><span class="n">' + TIERS[i].n + '</span><span class="m">' + TIERS[i].name + '</span></div>' +
+      '<div class="lb"><span class="add">' + (i === 0 ? "The floor, for every in-scope agent" : "Adds at " + TIERS[i].n) +
+      (cur ? '<span class="here">This deployment</span>' : "") + '</span>' +
+      '<p>' + L.controls + '</p></div></div>';
+  }).join("");
+
+  const row = f == null ? null : CONTROL_LAYERS[f];
+
+  const aside = f == null
+    ? '<div class="mini"><h4>Assurance</h4><div class="big" style="color:var(--slate);font-style:italic">Resolve the tier first</div></div>'
+    : '<div class="mini"><h4>Assurance</h4><div class="big" style="color:' + TIERS[f].c + '">' + row.assurance + '</div></div>' +
+      '<div class="mini"><h4>Record mode</h4><div class="big">' + (recordMode() === "passport" ? "Agent passport, presented at the trust boundary" : "Agent profile, composed into the governance record") + '</div></div>' +
+      '<div class="mini"><h4>Regulatory crosswalk</h4><ul>' + row.cross.map(c => '<li>' + c + '</li>').join("") + '</ul>' +
+      '<p class="fine">A crosswalk, not equivalence. Requires legal verification.</p></div>';
+
+  return open(4) +
+    band(2) +
+    head(4, "What the tier requires") +
+    (f == null
+      ? '<div class="ctrl-tier pending"><span class="ctl">Risk tier from step 3</span>' +
+        '<span class="ctv">Not yet resolved</span></div>'
+      : '<div class="ctrl-tier" style="--tc:' + TIERS[f].c + '">' +
+        '<span class="ctl">Risk tier from step 3</span>' +
+        '<span class="ctv">' + tierLabel(f) + '</span>' +
+        '<span class="ctn">Cumulative: every layer up to and including ' + TIERS[f].n + ' applies.</span></div>') +
+    '<div class="ctrl-grid"><div><div class="layers">' + layers + '</div>' +
+    '<p class="rubricnote">Each tier strengthens all five assurance dimensions: oversight, recordkeeping, testing, enforcement and monitoring.</p></div>' +
+    '<div class="aside-stack">' + aside + '</div></div>' +
+    crosswalkPanel() +
+    stepout(4, "Controls and assurance", f == null ? null : tierLabel(f) + " controls",
+      f == null ? "Resolve the tier in step 3." : "Cumulative from Tier 1 Limited upward.") +
+    '</section>';
+}
+
+/* ---------- step 5 ----------------------------------------- */
+
+function section5() {
+  const f = finalTier();
+  const u = unitById(S.unit);
+  const mode = recordMode();
+  const passport = mode === "passport";
+
+  const modeCard = (isP) => {
+    const on = isP === passport;
+    const color = isP ? "var(--sec3)" : "var(--sec1)";
+    const tint = isP ? "var(--t4t)" : "var(--panel)";
+    return '<div class="mode' + (on ? "" : " dim") + '" style="--mode-color:' + color + ';--mode-tint:' + tint + '">' +
+      '<div class="mh"><span class="mt">' + (isP ? "PASSPORT MODE" : "IDENTITY MODE") + '</span>' +
+      '<span class="mg">' + (isP ? "cross-boundary only" : "every agent") + '</span></div>' +
+      '<div class="mb"><div class="ms">' + (isP ? "Across domains the organization does not control" : "Inside a trust domain the organization controls") + '</div>' +
+      '<div class="mn">' + (isP ? "Everything in identity mode, plus:" : "Minimum claim set, held in the registry") + '</div>' +
+      '<ul>' + (isP ? PASSPORT_CLAIMS : IDENTITY_CLAIMS).map(c => '<li>' + c + '</li>').join("") + '</ul>' +
+      '<div class="mf">' + (isP ? "Presented at the boundary · entered in the registry" : "Mandatory for every in-scope agent") + '</div>' +
+      '</div></div>';
+  };
+
+  const fields = recordFields();
+  const ref = unitRef();
+  const bits = [];
+  for (let i = 0; i < 25; i++) {
+    let h = 0; const s = ref + ":" + i;
+    for (let k = 0; k < s.length; k++) h = (h * 31 + s.charCodeAt(k)) >>> 0;
+    bits.push(h % 3 === 0);
+  }
+
+  return open(5) +
+    band(3) +
+    head(5, "What the instrument leaves behind") +
+    '<div class="modes">' + modeCard(false) + modeCard(true) + '</div>' +
+    '<div class="note" style="margin-top:14px;border-left-color:var(--amp)"><b>' +
+    (passport
+      ? "Crosses a trust boundary it does not control: the record is presented as a passport."
+      : "Stays inside a trust domain it controls: the record stays in identity mode.") +
+    '</b></div>' +
+
+    '<div class="inputs">' +
+    ['system|System or unit name|e.g. Straight-through refund payout',
+     'owner|Accountable owner|Named person and role',
+     'org|Responsible organization|Legal entity'].map(spec => {
+      const [k, label, ph] = spec.split("|");
+      return '<label><span class="ik">' + label + '</span>' +
+        '<input type="text" data-input="' + k + '" value="' + esc(S[k]) + '" placeholder="' + esc(ph) + '"></label>';
+    }).join("") + '</div>' +
+
+    '<div class="record"><div class="rh">' +
+    '<span class="rt">Governance record</span>' +
+    '<span class="rid">' + (passport ? "PASSPORT" : "ID") + " &middot; " + ref + '</span></div>' +
+    fields.map(([k, v, pending]) =>
+      '<div class="field"><div class="fk">' + k + '</div>' +
+      '<div class="fv' + (pending ? " pending" : "") + '" data-rf="' + esc(k) + '">' + v + '</div></div>').join("") +
+    '<div class="ident" style="--mode-color:' + (passport ? "var(--sec3)" : "var(--sec1)") + '">' +
+    '<span class="grid" aria-hidden="true">' + bits.map(b => '<i class="' + (b ? "on" : "") + '"></i>').join("") + '</span>' +
+    '<span style="font-size:12.5px;color:var(--mut);line-height:1.5">Reference derived from the record\'s own content. ' +
+    'Cryptographic mechanism deferred to W3C, DIF, OpenID and IETF.</span></div>' +
+    '</div>' +
+
+    '<div class="exports">' +
+    '<button class="btn" type="button" data-export="md" data-fkey="x-md">Download the record</button>' +
+    '<button class="btn ghost" type="button" data-export="pdf" data-fkey="x-pdf">Download as PDF</button>' +
+    '<button class="btn ghost" type="button" data-export="json" data-fkey="x-json">Download as JSON</button>' +
+    '<button class="btn ghost" type="button" data-export="copy" data-fkey="x-copy">Copy to clipboard</button>' +
+    '<span class="msg" id="exportmsg"></span></div>' +
+    stepout(5, "Governance record", S.system ? S.system : null,
+      S.system
+        ? (passport ? "Passport mode. Presented at every boundary the organization does not control."
+          : "Identity mode. Held in the registry for the trust domain.")
+        : "Name the system and its accountable owner to complete the record.") +
+    '</section>';
+}
+
+const CHAIN = [
+  "Authority grant", "Model, tool and policy control", "Access", "Action and delegation",
+  "Approval", "Authorization compliance", "Monitoring, intervention and response",
+];
+
+function recordFields() {
+  const u = unitById(S.unit);
+  const f = finalTier();
+  const base = baseTier();
+  const firing = AMPS.filter(a => fires(S.amps[a.key])).map(a => a.name.toLowerCase());
+  const row = f == null ? null : CONTROL_LAYERS[f];
+  const v = scopeVerdict();
+
+  const pend = '<i>Not yet set</i>';
+  const chip = (t) => t == null ? pend :
+    '<span class="chip" style="' + tierSurface(t) + '">' + tierLabel(t) + '</span>';
+
+  return [
+    ["Unit of governance",
+      u ? esc(u.name) + ' <span style="color:var(--mut)">&middot; ' + u.tag + '</span>' : pend, !u],
+    ["Constituent agent profiles",
+      u ? (u.id === "agent" ? "One agent profile, for the single deployment"
+        : "One agent profile for each deployment instance inside the unit") : pend, !u],
+    ["Accountable owner",
+      (S.owner || S.org)
+        ? esc(S.owner || "Owner not named") + (S.org ? ' <span style="color:var(--mut)">&middot; ' + esc(S.org) + '</span>' : "")
+        : pend, !(S.owner || S.org)],
+    ["Authorization envelope",
+      v && v.scope
+        ? 'Permitted actions &middot; prohibited actions &middot; approved tools &middot; approved data classes' +
+          '<br><span style="color:var(--mut);font-size:12.5px">Operating model: ' + v.head.toLowerCase() + '</span>'
+        : pend, !(v && v.scope)],
+    ["Human oversight model",
+      oversightModel() ? esc(oversightModel()) + ' <span style="color:var(--mut)">&middot; read from agency at the moment of action</span>' : pend, !oversightModel()],
+    ["Risk tier",
+      f == null ? pend : chip(f) +
+        ' <span style="color:var(--mut)">&middot; base ' + tierLabel(base) + ' &middot; ' +
+        (firing.length ? "amplifiers: " + joinList(firing) : "neither amplifier applies") + '</span>', f == null],
+    ["Assurance status",
+      row ? esc(row.assurance) + ' <span style="color:var(--mut)">&middot; crosswalk: ' + esc(row.cross[0]) + '</span>' : pend, !row],
+    ["Portable governance record",
+      f == null ? pend :
+        '<span class="mono">' + unitRef() + '</span> &middot; ' +
+        (recordMode() === "passport"
+          ? "Agent passport: identity, version, responsible organization, function, authorization, tools and data, jurisdiction, assurance, validity, reauthorization, incident contact and revocation endpoint"
+          : "Agent profile with its agent ID: the minimum claim set, composed into the governance record"), f == null],
+    ["Accountability chain",
+      f == null ? pend :
+        "Authority grant &middot; model, tool and policy control &middot; access &middot; action and delegation &middot; approval &middot; authorization compliance &middot; monitoring, intervention and response", f == null],
+  ];
+}
+
+/* ---------- the system profile (step 1) -------------------- */
+
+/* form controls. One field per row: the label, then its choices on the
+   row beneath it. Never two fields side by side. */
+
+function opts(field, options, selected, multi, cls) {
+  const type = multi ? "checkbox" : "radio";
+  return '<div class="opts' + (cls ? " " + cls : "") + '">' + options.map(([v, label]) => {
+    const on = multi ? has(selected, v) : String(selected) === String(v);
+    return '<label class="opt"><input type="' + type + '" data-pfc="' + field + '" value="' + v + '"' +
+      ' data-multi="' + (multi ? 1 : 0) + '" name="pf-' + field + '"' +
+      (on ? " checked" : "") + '><span>' + label + '</span></label>';
+  }).join("") + '</div>';
+}
+
+function richOpts(field, rows, current) {
+  return '<div class="opts rich">' + rows.map(r =>
+    '<label class="opt" style="--rc:' + (r.color || "var(--sec1)") + '">' +
+    '<input type="radio" data-pfc="' + field + '" value="' + r.v + '" data-multi="0"' +
+    ' name="pf-' + field + '"' + (String(current) === String(r.v) ? " checked" : "") + '>' +
+    '<span><b>' + r.label + '</b>' + (r.note ? '<em>' + r.note + '</em>' : "") +
+    (r.tag ? '<i class="risk">' + r.tag + '</i>' : "") + '</span></label>').join("") + '</div>';
+}
+
+function pselect(name, options, cur) {
+  return '<select class="psel" data-pfsel="' + name + '">' +
+    '<option value=""' + (cur == null ? " selected" : "") + '>Not set</option>' +
+    options.map(([v, l]) =>
+      '<option value="' + v + '"' + (cur === v ? " selected" : "") + '>' + l + '</option>').join("") +
+    '</select>';
+}
+
+const prow = (label, body) =>
+  '<div class="prow"><div class="pk">' + label + '</div>' + body + '</div>';
+
+const pband = (title) => '<div class="pband">' + title + '</div>';
+
+function profilePanel() {
+  const p = P();
+  const sc = substrateControls();
+
+  const modes = PF.agencyMode.map(([m, d], i) =>
+    ({ v: i, label: m, note: d, color: TIERS[i].c }));
+
+  const substrates = SUBSTRATE.map(sb =>
+    ({ v: sb.id, label: sb.label, note: sb.custody, tag: sb.withdrawal + " withdrawal risk" }));
+
+  return '<details class="panel collapsible" id="profile"' + (PROFILE_OPEN ? " open" : "") + '>' +
+    '<summary class="panel-head"><h3>Agentic system profiling</h3><span class="opt-tag">Optional</span>' +
+    '<span class="phint">Proposes a tiering in step 3 &middot; maps the regulatory crosswalk in step 4</span></summary>' +
+
+    '<div class="pform">' +
+      pband("Deployment") +
+      prow("Sector", pselect("domain", PF.domain, p.domain)) +
+      prow("Jurisdictions of operation", opts("regions", PF.regions, p.regions, true)) +
+      prow("Data classes", opts("data", PF.data, p.data, false)) +
+
+      pband("Authority") +
+      prow("Acts", richOpts("agencyMode", modes, p.agencyMode)) +
+      prow("Consequential actions", opts("conseq", PF.conseq, p.conseq, true)) +
+
+      pband("Reach and dependencies") +
+      prow("Capabilities", opts("caps", PF.caps, p.caps, true)) +
+      prow("Model substrate and custody", richOpts("substrate", substrates, p.substrate)) +
+      prow("Model hosting jurisdiction", pselect("modelRegion", PF.modelRegion, p.modelRegion)) +
+      prow("Contractual commitments", opts("dataIp", PF.dataIp, p.dataIp, true)) +
+      prow("Delegation",
+        '<div class="opts"><label class="opt"><input type="checkbox" data-pfc="delegatesOut" value="1"' +
+        (p.delegatesOut ? " checked" : "") +
+        '><span>Delegates action across a boundary the organization does not control</span></label></div>') +
+    '</div>' +
+
+    (sc.sub ? '<p class="pnote">' + esc(sc.sub.note) + '</p>' : "") +
+    '</details>';
+}
+
+/* ---------- what the profile proposes (step 3) ------------- */
+
+function proposalPanel() {
+  const pr = proposals();
+  const rows = [];
+  /* a scored row reads off the rubric above. only an unscored row falls back
+     to what the profile proposes, so the panel can never contradict a selection */
+  const push = (row, isAmp) => {
+    const key = row.key;
+    const cur = isAmp ? S.amps[key] : S.dims[key];
+    if (cur != null) {
+      rows.push([row.name, cur, row.cells[cur].p.join(". ") + ".", isAmp, true]);
+      return;
+    }
+    if (!pr[key]) {
+      rows.push([row.name, null, "Not scored, and the profile has no answer for this yet.", isAmp, false]);
+      return;
+    }
+    rows.push([row.name, pr[key].level, pr[key].why, isAmp, false]);
+  };
+  DIMS.forEach(d => push(d, false));
+  AMPS.forEach(a => push(a, true));
+
+  return '<div class="panel proposal">' +
+    '<div class="panel-head"><h3>Proposed risk tier</h3>' +
+    '<span class="phint">Scored rows follow the rubric above</span></div>' +
+    '<table class="ptable"><tbody>' + rows.map(([name, lv, why, isAmp, scored]) =>
+      '<tr><td class="pn">' + name +
+      (scored ? '' : '<span class="pfrom">from the profile</span>') + '</td>' +
+      '<td class="pv">' + (lv == null ? '<span class="pnone">—</span>' :
+        '<span class="chip" style="' + (isAmp
+          ? (lv >= 2 ? "background:var(--amp);color:#fff" : "background:var(--no-bg);color:var(--slate);box-shadow:inset 0 0 0 1px var(--line)")
+          : tierSurface(lv)) + '">' +
+        (isAmp ? (lv >= 2 ? "Applies" : "Does not apply") + " · " + TIERS[lv].n : tierLabel(lv)) + '</span>') + '</td>' +
+      '<td class="pw">' + why + '</td>' +
+      '</tr>').join("") + '</tbody></table>' +
+    '</div>';
+}
+
+/* ---------- the regulatory crosswalk (step 4) -------------- */
+
+/* each framework carries its family's colour: EU blue, US teal, UK purple,
+   APAC amber, global slate. safeguards take the control green, voluntary
+   packs the record purple. red is never used here: it means tier identity. */
+const FW_COLOR = {
+  "EU AI Act": "var(--sec1)", "GDPR": "var(--sec1)", "EU DORA": "var(--sec1)", "EU MDR": "var(--sec1)",
+  "HIPAA": "var(--t1)", "NYC Local Law 144": "var(--t1)", "SR 11-7": "var(--t1)",
+  "BSA / OFAC": "var(--t1)", "Colorado AI Act": "var(--t1)",
+  "UK GDPR / DPA 2018": "var(--sec3)",
+  "Singapore PDPA": "var(--t2)", "Singapore Model AI Governance Framework": "var(--t2)",
+  "NIST AI RMF": "var(--t1)", "ISO/IEC 42001": "var(--sec3)", "OECD AI Principles": "var(--slate)",
+};
+const CLASS_COLOR = { must: "var(--sec1)", guard: "var(--sec2)", vol: "var(--sec3)" };
+const fwColor = (fw, cls) => FW_COLOR[fw] || CLASS_COLOR[cls] || "var(--slate)";
+
+function crosswalkPanel() {
+  if (!profileTouched()) {
+    return '<div class="panel" id="crosswalk">' +
+      '<div class="panel-head"><h3>Regulatory crosswalk</h3><span class="opt-tag">Optional</span></div>' +
+      '<p class="pnote" style="margin:0 0 12px">Maps the obligations likely to apply for the sectors and jurisdictions in scope. ' +
+      'It reads from the agentic system profiling in step 2.</p>' +
+      '<button class="btn ghost" type="button" data-goto="profile">Open the system profiling</button></div>';
+  }
+  const x = crosswalk();
+  const f = finalTier();
+  const sc = substrateControls();
+
+  const oblig = (list, cls) => list.length
+    ? '<div class="obligs">' + list.map(o =>
+        '<div class="oblig ' + cls + '" style="--o:' + fwColor(o.fw, cls) + '">' +
+        '<div class="oh"><span class="fw">' + esc(o.fw) + '</span>' +
+        '<span class="ot">' + esc(o.t) + '</span></div>' +
+        '<p>' + esc(o.why) + '</p>' +
+        (o.thr ? thrControl(o.thr) : "") + '</div>').join("") + '</div>'
+    : '<p class="fineprint">Nothing in this class for the profile as described.</p>';
+
+  return '<div class="panel" id="crosswalk">' +
+    '<div class="panel-head"><h3>Regulatory crosswalk</h3></div>' +
+    '<p class="pnote" style="margin:0 0 15px">Mapped against the jurisdictions and use case in the profile. A crosswalk, not equivalence: every citation requires legal verification against primary sources.</p>' +
+
+    '<div class="ortho">' +
+    '<div class="oside"><div class="ok">Use-case class</div>' +
+    '<div class="ov">' + esc(x.useTier) + '</div>' +
+    '<div class="ob">' + esc(x.useBasis) + '</div>' +
+    '<div class="oc">Classified by use case and potential impact. The EU AI Act\'s vocabulary.</div></div>' +
+    '<div class="oaxis" aria-hidden="true"><span>orthogonal</span></div>' +
+    '<div class="oside"><div class="ok">Instrument tier</div>' +
+    '<div class="ov"' + (f == null ? "" : ' style="color:' + TIERS[f].c + '"') + '>' + (f == null ? "Not yet resolved" : tierLabel(f)) + '</div>' +
+    '<div class="ob">' + (f == null ? "Score the rubric in step 3." : "Set by agency, impact and reach, then the amplifiers.") + '</div>' +
+    '<div class="oc">Classified by how independently it acts, how much authority it holds, and how far it reaches.</div></div>' +
+    '</div>' +
+    '<p class="note" style="margin:0 0 18px">A unit can be low on one and high on the other. Read both; never merge them.</p>' +
+
+    '<h4 class="xh ' + 'must' + '" style="--o:' + CLASS_COLOR.must + '">Obligations likely engaged <span class="xn">' + x.mandatory.length + '</span></h4>' +
+    oblig(x.mandatory, "must") +
+
+    '<h4 class="xh ' + 'guard' + '" style="--o:' + CLASS_COLOR.guard + '">Operational safeguards <span class="xn">' + x.safeguards.length + '</span></h4>' +
+    oblig(x.safeguards, "guard") +
+
+    '<h4 class="xh ' + 'vol' + '" style="--o:' + CLASS_COLOR.vol + '">Voluntary frameworks <span class="xn">' + x.frameworks.length + '</span></h4>' +
+    oblig(x.frameworks, "vol") +
+
+    '<h4 class="xh">From the model substrate</h4>' +
+    (sc.controls.length
+      ? '<div class="obligs">' + sc.controls.map(c =>
+          '<div class="oblig guard" style="--o:var(--sec2)"><div class="oh"><span class="fw">Supply chain</span><span class="ot">' + esc(c.t) + '</span></div>' +
+          '<p>' + esc(c.why) + '</p></div>').join("") + '</div>'
+      : '<p class="fineprint">Weights and inference are in the organization&rsquo;s custody, so no supply-chain control is added.</p>') +
+    '</div>';
+}
+
+function thrControl(t) {
+  const v = thresholdValue(t);
+  return '<div class="thr"><label class="tl" for="thr-' + t.id + '">' + esc(t.label) + '</label>' +
+    '<div class="trow"><input id="thr-' + t.id + '" type="range" data-thr="' + t.id + '"' +
+    ' min="' + t.min + '" max="' + t.max + '" step="' + t.step + '" value="' + v + '">' +
+    '<output class="tv mono">' + v + " " + esc(t.unit) + '</output></div>' +
+    '<div class="th">' + esc(t.help) + '</div></div>';
+}
+
+/* ---------- worked examples -------------------------------- */
+
+function examplePicker() {
+  return '<div class="examples"><span class="lbl">Worked examples</span>' +
+    EXAMPLES.map(e =>
+      '<button class="ex" type="button" data-example="' + e.id + '" data-fkey="ex-' + e.id + '"' +
+      ' aria-pressed="' + (S.example === e.id) + '"' +
+      ' style="--ex-color:' + TIERS[e.tier].c + ';--ex-tint:' + TIERS[e.tier].t +
+      ';--ex-fill:' + TIERS[e.tier].f + ';--ex-on:' + TIERS[e.tier].o + '">' +
+      '<span class="dot">' + (e.tier + 1) + '</span>' +
+      '<span class="exb"><span class="exn">' + esc(e.title) + '</span>' +
+      '<span class="exd">' + esc(e.blurb) + '</span></span>' +
+      '</button>').join("") +
+    '</div>';
+}
+
+/* ============================================================
+   Interaction
+   ============================================================ */
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-scope],[data-test],[data-diagnosis],[data-unit],[data-dim],[data-amp],[data-example],[data-goto],[data-tab],[data-action],[data-export],[data-pf]");
+  if (!t) return;
+
+  if (t.dataset.tab) {
+    const changed = VIEW !== t.dataset.tab;
+    VIEW = t.dataset.tab;
+    if (changed) { render(); window.scrollTo(0, 0); }
+    if (t.dataset.goto) {
+      const target = t.dataset.goto;
+      requestAnimationFrame(() => {
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    } else if (!changed) render();
+    return;
+  }
+  if (t.dataset.goto === "profile" && !PROFILE_OPEN) { PROFILE_OPEN = true; render(); }
+  if (t.dataset.goto) {
+    const el = document.getElementById(t.dataset.goto);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  if (t.dataset.action === "reset") { S = blank(); render(); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+  if (t.dataset.export) { runExport(t.dataset.export); return; }
+
+  if (t.dataset.example) { loadExample(t.dataset.example); render(); return; }
+
+  /* any hand edit means this is no longer the worked example as published */
+  S.example = null;
+
+  if (t.dataset.pf) {
+    const p = P(), f = t.dataset.pf, raw = t.dataset.pfv;
+    if (f === "delegatesOut") p.delegatesOut = !p.delegatesOut;
+    else if (t.dataset.multi === "1") {
+      const i = p[f].indexOf(raw);
+      if (i === -1) p[f].push(raw); else p[f].splice(i, 1);
+    } else if (f === "agencyMode") {
+      const v = +raw;
+      p.agencyMode = p.agencyMode === v ? null : v;
+    } else {
+      p[f] = raw;
+    }
+  }
+
+  if (t.dataset.scope) {
+    S.scope[t.dataset.scope] = S.scope[t.dataset.scope] === t.dataset.val ? null : t.dataset.val;
+    /* answering a question again invalidates the ones below it */
+    if (t.dataset.scope === "q1") { S.scope.q2 = null; S.scope.q3 = null; }
+    if (t.dataset.scope === "q2") { S.scope.q3 = null; }
+  }
+  if (t.dataset.test) {
+    S.tests[t.dataset.test] = S.tests[t.dataset.test] === t.dataset.val ? null : t.dataset.val;
+    if (testsState() !== "fail") S.diagnosis = null;
+  }
+  if (t.dataset.diagnosis) S.diagnosis = S.diagnosis === t.dataset.diagnosis ? null : t.dataset.diagnosis;
+  if (t.dataset.unit) S.unit = S.unit === t.dataset.unit ? null : t.dataset.unit;
+  if (t.dataset.dim) {
+    const lv = +t.dataset.level;
+    S.dims[t.dataset.dim] = S.dims[t.dataset.dim] === lv ? null : lv;
+  }
+  if (t.dataset.amp) {
+    const lv = +t.dataset.level;
+    S.amps[t.dataset.amp] = S.amps[t.dataset.amp] === lv ? null : lv;
+  }
+  render();
+});
+
+/* the profile panel remembers whether it was opened, across re-renders */
+document.addEventListener("toggle", e => {
+  if (e.target && e.target.id === "profile") PROFILE_OPEN = e.target.open;
+}, true);
+
+/* every profile control changes what is derived, so it re-renders */
+document.addEventListener("change", e => {
+  const sel = e.target.closest("[data-pfsel]");
+  if (sel) {
+    P()[sel.dataset.pfsel] = sel.value === "" ? null : sel.value;
+    S.example = null;
+    render();
+    return;
+  }
+
+  const box = e.target.closest("[data-pfc]");
+  if (!box) return;
+  const p = P(), f = box.dataset.pfc;
+  if (f === "delegatesOut") p.delegatesOut = box.checked;
+  else if (box.dataset.multi === "1") {
+    const i = p[f].indexOf(box.value);
+    if (box.checked && i === -1) p[f].push(box.value);
+    else if (!box.checked && i !== -1) p[f].splice(i, 1);
+  } else {
+    p[f] = f === "agencyMode" ? +box.value : box.value;
+  }
+  S.example = null;
+  render();
+});
+
+/* dragging a threshold patches its own readout; nothing else depends on it */
+document.addEventListener("input", e => {
+  const slider = e.target.closest("[data-thr]");
+  if (slider) {
+    S.thresholds[slider.dataset.thr] = +slider.value;
+    const out = slider.parentElement.querySelector(".tv");
+    if (out) {
+      const unit = out.textContent.replace(/^[-\d.]+\s*/, "");
+      out.textContent = slider.value + " " + unit;
+    }
+    return;
+  }
+
+  const el = e.target.closest("[data-input]");
+  if (!el) return;
+  S[el.dataset.input] = el.value;
+  renderStrip();
+  const rows = recordFields();
+  rows.forEach(([k, v, pending]) => {
+    const cell = document.querySelector('[data-rf="' + CSS.escape(k) + '"]');
+    if (cell) { cell.innerHTML = v; cell.classList.toggle("pending", !!pending); }
+  });
+  const rid = document.querySelector(".record .rid");
+  if (rid) rid.innerHTML = (recordMode() === "passport" ? "PASSPORT" : "ID") + " &middot; " + unitRef();
+});
+
+/* rail highlighting */
+let observer = null;
+function observeSteps() {
+  if (observer) observer.disconnect();
+  if (VIEW === "intro") return;
+  const stops = Array.from(document.querySelectorAll(".stop"));
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const n = STEPS.findIndex(s => s.id === en.target.id) + 1;
+      stops.forEach(b => b.setAttribute("aria-current", String(+b.dataset.step === n)));
+    });
+  }, { rootMargin: "-84px 0px -60% 0px", threshold: 0 });
+  STEPS.forEach(s => { const el = document.getElementById(s.id); if (el) observer.observe(el); });
+}
+
+/* ---------- export ----------------------------------------- */
+
+function recordPlain() {
+  const u = unitById(S.unit);
+  const f = finalTier();
+  const base = baseTier();
+  const v = scopeVerdict();
+  const row = f == null ? null : CONTROL_LAYERS[f];
+  const x = crosswalk();
+  const sc = substrateControls();
+  const amps = {};
+  AMPS.forEach(a => {
+    const lv = S.amps[a.key];
+    amps[a.key] = lv == null ? null : {
+      descriptor: a.cells[lv].p.join("; "),
+      fires: fires(lv),
+      setsTier4Alone: farEnd(lv),
+    };
+  });
+  const dims = {};
+  DIMS.forEach(d => {
+    const lv = S.dims[d.key];
+    dims[d.key] = lv == null ? null : { tier: TIERS[lv].n + " " + TIERS[lv].name, descriptor: d.cells[lv].p.join("; ") };
+  });
+
+  return {
+    reference: unitRef(),
+    generated: new Date().toISOString().slice(0, 10),
+    instrument: "WEF Units of Governance, accountability instrument",
+    system: S.system || null,
+    operatingModel: v ? v.head : null,
+    inScope: !!(v && v.scope),
+    unitOfGovernance: u ? u.name : null,
+    constituentAgentProfiles: u ? (u.id === "agent" ? "One agent profile" : "One agent profile per deployment instance") : null,
+    humanOversightModel: oversightModel(),
+    accountableOwner: S.owner || null,
+    responsibleOrganization: S.org || null,
+    unitTests: { ...S.tests },
+    diagnosis: S.diagnosis,
+    dimensions: dims,
+    baseTier: base == null ? null : tierLabel(base),
+    amplifiers: amps,
+    riskTier: f == null ? null : tierLabel(f),
+    controls: row ? row.controls : null,
+    cumulativeControls: f == null ? null : CONTROL_LAYERS.slice(0, f + 1).map((L, i) => TIERS[i].n + ": " + L.controls),
+    unitSpecificControls: u ? UNIT_CONTROLS[u.id] : null,
+    assurance: row ? row.assurance : null,
+    recordMode: f == null ? null : (recordMode() === "passport" ? "Agent passport" : "Agent profile"),
+    regulatoryCrosswalk: row ? row.cross : null,
+    escalators: INTERRUPTS,
+    accountabilityChain: CHAIN,
+    profile: {
+      sector: (PF.domain.find(d => d[0] === S.profile.domain) || [])[1] || null,
+      jurisdictions: S.profile.regions.map(k => (PF.regions.find(x => x[0] === k) || [])[1]).filter(Boolean),
+      dataClasses: (PF.data.find(d => d[0] === S.profile.data) || [])[1] || null,
+      agencyMode: S.profile.agencyMode == null ? null : PF.agencyMode[S.profile.agencyMode][0],
+      capabilities: S.profile.caps.map(k => (PF.caps.find(x => x[0] === k) || [])[1]).filter(Boolean),
+      consequentialActions: S.profile.conseq.map(k => (PF.conseq.find(x => x[0] === k) || [])[1]).filter(Boolean),
+      modelSubstrate: (SUBSTRATE.find(s => s.id === S.profile.substrate) || {}).label || null,
+      modelHostingJurisdiction: (PF.modelRegion.find(x => x[0] === S.profile.modelRegion) || [])[1] || null,
+      dataIpCommitments: S.profile.dataIp.map(k => (PF.dataIp.find(x => x[0] === k) || [])[1]).filter(Boolean),
+      delegatesOutsideControl: S.profile.delegatesOut,
+    },
+    useCaseClass: x.useTier,
+    useCaseBasis: x.useBasis,
+    obligationsLikelyEngaged: x.mandatory.map(o => o.fw + ". " + o.t + ": " + o.why),
+    operationalSafeguards: x.safeguards.map(o => ({
+      control: o.fw + ". " + o.t,
+      why: o.why,
+      threshold: o.thr ? { label: o.thr.label, value: thresholdValue(o.thr), unit: o.thr.unit } : null,
+    })),
+    voluntaryFrameworks: x.frameworks.map(o => o.fw + ". " + o.t),
+    supplyChainControls: sc.controls.map(c => c.t + ": " + c.why),
+    note: "Advisory guidance, not legal advice. A tier is not a legal category. The use-case class and the instrument tier are orthogonal and must not be merged. Crosswalk citations require legal verification against primary sources.",
+  };
+}
+
+function recordMarkdown() {
+  const r = recordPlain();
+  const L = [];
+  L.push("# Governance record: " + (r.system || "unnamed unit"));
+  L.push("");
+  L.push("`" + r.reference + "` · " + r.generated + " · " + r.instrument);
+  L.push("");
+  L.push("| Field | Entry |");
+  L.push("| --- | --- |");
+  const row = (k, v) => L.push("| " + k + " | " + (v == null || v === "" ? "_not set_" : String(v).replace(/\|/g, "\\|")) + " |");
+  row("Unit of governance", r.unitOfGovernance);
+  row("Accountable owner", [r.accountableOwner, r.responsibleOrganization].filter(Boolean).join(" · "));
+  row("Operating model", r.operatingModel);
+  row("Constituent agent profiles", r.constituentAgentProfiles);
+  row("Human oversight model", r.humanOversightModel);
+  row("Base tier", r.baseTier);
+  row("Risk tier", r.riskTier);
+  row("Assurance status", r.assurance);
+  row("Record mode", r.recordMode);
+  L.push("");
+  L.push("## How the tier was reached");
+  L.push("");
+  derivation().forEach(d => L.push("- " + d.replace(/<\/?b>/g, "**")));
+  L.push("");
+  L.push("## Controls this tier requires");
+  L.push("");
+  (r.cumulativeControls || ["_tier not resolved_"]).forEach(c => L.push("- " + c));
+  if (r.unitSpecificControls) {
+    L.push("");
+    L.push("### Added because the unit is a " + (r.unitOfGovernance || "").toLowerCase());
+    L.push("");
+    r.unitSpecificControls.forEach(c => L.push("- " + c));
+  }
+  L.push("");
+  L.push("## Regulatory crosswalk");
+  L.push("");
+  L.push("Use-case class: **" + r.useCaseClass + "**. " + r.useCaseBasis);
+  L.push("");
+  L.push("Instrument tier: **" + (r.riskTier || "not resolved") + "**, set by agency, impact and reach.");
+  L.push("");
+  L.push("These are orthogonal. Read both; never merge them.");
+  L.push("");
+  L.push("### Named in the primer");
+  L.push("");
+  (r.regulatoryCrosswalk || []).forEach(c => L.push("- " + c));
+  if (r.obligationsLikelyEngaged.length) {
+    L.push("");
+    L.push("### Obligations likely engaged");
+    L.push("");
+    r.obligationsLikelyEngaged.forEach(c => L.push("- " + c));
+  }
+  if (r.operationalSafeguards.length) {
+    L.push("");
+    L.push("### Operational safeguards");
+    L.push("");
+    r.operationalSafeguards.forEach(s2 => L.push("- " + s2.control +
+      (s2.threshold ? ". " + s2.threshold.label + ": **" + s2.threshold.value + " " + s2.threshold.unit + "**" : "")));
+  }
+  if (r.supplyChainControls.length) {
+    L.push("");
+    L.push("### From the model substrate");
+    L.push("");
+    r.supplyChainControls.forEach(c => L.push("- " + c));
+  }
+  L.push("");
+  L.push("## Agentic system profiling");
+  L.push("");
+  const pf = r.profile;
+  [["Sector", pf.sector], ["Jurisdictions", pf.jurisdictions.join(", ")],
+   ["Data classes", pf.dataClasses], ["Agency mode", pf.agencyMode],
+   ["Capabilities", pf.capabilities.join(", ")], ["Consequential actions", pf.consequentialActions.join(", ")],
+   ["Model substrate", pf.modelSubstrate], ["Model hosting", pf.modelHostingJurisdiction],
+   ["Data and IP commitments", pf.dataIpCommitments.join(", ")],
+   ["Delegates outside the organization's control", pf.delegatesOutsideControl ? "yes" : "no"]]
+    .forEach(([k, val]) => L.push("- **" + k + ":** " + (val || "_not set_")));
+  L.push("");
+  L.push("_" + r.note + "_");
+  return L.join("\n");
+}
+
+function exportMsg(text) {
+  const el = document.getElementById("exportmsg");
+  if (!el) return;
+  el.textContent = text;
+  clearTimeout(exportMsg.t);
+  exportMsg.t = setTimeout(() => { if (el.isConnected) el.textContent = ""; }, 5000);
+}
+
+/* ---------- the record as a PDF ----------------------------
+   A small PDF writer, so the export works offline with no library. It uses
+   the two standard Helvetica faces and WinAnsi encoding, so the whole file
+   stays plain ASCII and saves the same way as the Markdown and JSON. */
+
+const WINANSI = { "•": 149, "–": 150, "—": 151, "‘": 145, "’": 146,
+  "“": 147, "”": 148, "…": 133, "€": 128, "™": 153 };
+
+function pdfText(t) {
+  let out = "";
+  for (const ch of t) {
+    const c = ch.codePointAt(0);
+    if (ch === "\\" || ch === "(" || ch === ")") out += "\\" + ch;
+    else if (c >= 32 && c < 127) out += ch;
+    else if (WINANSI[ch]) out += "\\" + WINANSI[ch].toString(8);
+    else if (c >= 160 && c <= 255) out += "\\" + c.toString(8);
+    else if (ch === "→") out += "->";
+    else out += "?";
+  }
+  return out;
+}
+
+/* Helvetica and Helvetica-Bold advance widths (Adobe AFM, per 1000 em) for
+   printable ASCII, so wrapping and right alignment land where they should */
+const AFM_R = [278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+const AFM_B = [278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
+function textW(t, size, bold, tc) {
+  const tbl = bold ? AFM_B : AFM_R;
+  let w = 0;
+  for (const ch of t) {
+    const c = ch.codePointAt(0);
+    w += (c >= 32 && c < 127) ? tbl[c - 32] : (ch === "·" ? 278 : ch === "•" ? 350 : 556);
+  }
+  return w * size / 1000 + (tc || 0) * [...t].length;
+}
+function wrapW(text, size, bold, maxW) {
+  const words = String(text).split(/\s+/).filter(Boolean), lines = [];
+  let line = "";
+  words.forEach(w => {
+    const next = line ? line + " " + w : w;
+    if (textW(next, size, bold) > maxW && line) { lines.push(line); line = w; } else line = next;
+  });
+  if (line) lines.push(line);
+  return lines.length ? lines : [""];
+}
+
+/* the primer's palette, as PDF colour operands */
+const hex = h => [0, 2, 4].map(i => (parseInt(h.slice(i, i + 2), 16) / 255).toFixed(3)).join(" ");
+const PC = {
+  navy: "14304e", ink: "1c2a3d", mut: "47515f", line: "dde3ea", panel: "f1f4f8", white: "ffffff",
+  mint: "8fd9c8", ice: "cadcfc", sec1: "2f5f9e", sec2: "2c8a68", sec3: "7a4e9e", amp: "c2740f", ampbg: "fdf4e6",
+};
+const PT = [ /* fill, ink on fill, edge: red is never a fill, Tier 3 takes its tint with red ink */
+  { f: "1f8272", o: "ffffff", e: "1f8272" }, { f: "d9821f", o: "ffffff", e: "d9821f" },
+  { f: "fbeae8", o: "c9453c", e: "c9453c" }, { f: "7a4e9e", o: "ffffff", e: "7a4e9e" },
+];
+
+function recordPDF() {
+  const W = 595, H = 842, M = 46, CW = W - 2 * M, FOOT = 58;
+  const r = recordPlain(), f = finalTier(), base = baseTier(), u = unitById(S.unit);
+  const passport = recordMode() === "passport", ref = unitRef();
+  const strip = t => String(t == null ? "" : t).replace(/<\/?b>/g, "").replace(/&middot;/g, "·").replace(/&amp;/g, "&");
+  const system = r.system || "Unnamed unit";
+
+  const pages = [];
+  let ops, y;
+  const put = o => ops.push(o);
+  const fill = (x, yy, w, h, c) => put(hex(c) + " rg " + x.toFixed(1) + " " + (H - yy - h).toFixed(1) + " " + w.toFixed(1) + " " + h.toFixed(1) + " re f");
+  const box = (x, yy, w, h, c, lw) => put(hex(c) + " RG " + (lw || 0.75) + " w " + x.toFixed(1) + " " + (H - yy - h).toFixed(1) + " " + w.toFixed(1) + " " + h.toFixed(1) + " re S");
+  const rule = (x1, yy, x2, c, lw) => put(hex(c) + " RG " + (lw || 0.6) + " w " + x1.toFixed(1) + " " + (H - yy).toFixed(1) + " m " + x2.toFixed(1) + " " + (H - yy).toFixed(1) + " l S");
+  /* yy is the baseline measured from the top of the page */
+  const txt = (x, yy, t, size, o = {}) => {
+    const tc = o.tc || 0;
+    const xx = o.right ? x - textW(t, size, o.bold, tc) : o.center ? x - textW(t, size, o.bold, tc) / 2 : x;
+    put("BT " + hex(o.c || PC.ink) + " rg /" + (o.bold ? "F2" : "F1") + " " + size + " Tf " + tc + " Tc " +
+      xx.toFixed(1) + " " + (H - yy).toFixed(1) + " Td (" + pdfText(t) + ") Tj ET");
+  };
+  const para = (x, yy, t, size, maxW, o = {}) => {
+    const lines = wrapW(t, size, o.bold, maxW), lead = size * (o.lead || 1.35);
+    lines.forEach((ln, i) => txt(x, yy + i * lead, ln, size, o));
+    return lines.length * lead;
+  };
+  const chip = (x, yy, t, c, onFill, edge, size = 7.5) => {
+    const w = textW(t, size, true, 0.5) + 12;
+    fill(x, yy, w, 14, c); if (edge) box(x, yy, w, 14, edge, 0.8);
+    txt(x + 6, yy + 10, t, size, { bold: true, c: onFill, tc: 0.5 });
+    return w;
+  };
+
+  const newPage = first => {
+    ops = []; pages.push(ops);
+    if (first) {
+      fill(0, 0, W, 124, PC.navy);
+      txt(M, 34, "GOVERNANCE RECORD", 8.5, { bold: true, c: PC.mint, tc: 1.6 });
+      const tl = wrapW(system, 20, true, 330);
+      tl.slice(0, 2).forEach((ln, i) => txt(M, 60 + i * 24, ln, 20, { bold: true, c: PC.white }));
+      txt(M, 60 + Math.min(tl.length, 2) * 24 + 2, "Units of Governance  ·  the accountability instrument", 9, { c: PC.ice });
+      const badge = passport ? "AGENT PASSPORT" : "AGENT PROFILE";
+      const bw = textW(badge, 8, true, 1) + 18;
+      box(W - M - bw, 26, bw, 18, PC.mint, 1);
+      txt(W - M - bw / 2, 38.5, badge, 8, { bold: true, c: PC.mint, tc: 1, center: true });
+      txt(W - M, 64, "Reference  " + ref, 9, { c: PC.white, right: true, bold: true });
+      txt(W - M, 79, "Issued  " + r.generated, 9, { c: PC.ice, right: true });
+      txt(W - M, 94, passport ? "Presented at the trust boundary" : "Held in the organization's registry", 8.5, { c: PC.ice, right: true });
+      y = 148;
+    } else {
+      fill(0, 0, W, 30, PC.navy);
+      txt(M, 19, "GOVERNANCE RECORD", 7.5, { bold: true, c: PC.mint, tc: 1.4 });
+      txt(W - M, 19, system + "  ·  " + ref, 8, { c: PC.white, right: true });
+      y = 56;
+    }
+  };
+  const need = h => { if (y + h > H - FOOT) newPage(false); };
+
+  const section = (n, title, color) => {
+    need(60);
+    fill(M, y, 16, 16, color);
+    txt(M + 8, y + 11.6, String(n), 9, { bold: true, c: PC.white, center: true });
+    txt(M + 24, y + 12, title, 12.5, { bold: true, c: PC.navy });
+    rule(M, y + 22, W - M, color, 1.1);
+    y += 34;
+  };
+  const kv = (rows) => {
+    rows.forEach(([k, v], i) => {
+      const lines = wrapW(strip(v) || "Not set", 9.5, false, CW - 170);
+      const h = Math.max(20, lines.length * 12.8 + 8);
+      need(h);
+      if (i % 2 === 0) fill(M, y, CW, h, PC.panel);
+      txt(M + 10, y + 13, k, 8.5, { bold: true, c: PC.navy });
+      lines.forEach((ln, j) => txt(M + 160, y + 13 + j * 12.8, ln, 9.5, { c: v ? PC.ink : PC.mut }));
+      y += h;
+    });
+    y += 10;
+  };
+  const bullets = (items, color, size = 9.3) => {
+    items.forEach(t => {
+      const lines = wrapW(strip(t), size, false, CW - 18);
+      need(lines.length * size * 1.35 + 4);
+      fill(M + 3, y + 3.2, 3.6, 3.6, color);
+      lines.forEach((ln, j) => txt(M + 14, y + 7.5 + j * size * 1.35, ln, size));
+      y += lines.length * size * 1.35 + 4;
+    });
+    y += 6;
+  };
+  const label = (t, color) => { need(30); txt(M, y + 8, t, 7.8, { bold: true, c: color || PC.mut, tc: 1.1 }); y += 16; };
+
+  newPage(true);
+
+  /* summary tiles */
+  const tw = (CW - 16) / 3, th = 70;
+  fill(M, y, tw, th, PC.panel);
+  txt(M + 12, y + 18, "UNIT OF GOVERNANCE", 7.5, { bold: true, c: PC.mut, tc: 1 });
+  wrapW(u ? u.name : "Not set", 13, true, tw - 24).slice(0, 2).forEach((ln, i) => txt(M + 12, y + 38 + i * 15, ln, 13, { bold: true, c: PC.navy }));
+  const tx = M + tw + 8, tier = f == null ? null : PT[f];
+  if (tier) { fill(tx, y, tw, th, tier.f); if (f === 2) box(tx, y, tw, th, tier.e, 1.2); } else fill(tx, y, tw, th, PC.panel);
+  txt(tx + 12, y + 18, "RISK TIER", 7.5, { bold: true, c: tier ? tier.o : PC.mut, tc: 1 });
+  txt(tx + 12, y + 41, f == null ? "Not resolved" : tierLabel(f), 15, { bold: true, c: tier ? tier.o : PC.mut });
+  txt(tx + 12, y + 58, f == null ? "" : "Base " + tierLabel(base) + (f > base ? ", raised by the amplifiers" : ""), 8, { c: tier ? tier.o : PC.mut });
+  const ax = M + 2 * (tw + 8);
+  fill(ax, y, tw, th, PC.panel);
+  txt(ax + 12, y + 18, "ASSURANCE", 7.5, { bold: true, c: PC.mut, tc: 1 });
+  wrapW(r.assurance || "Not set", 13, true, tw - 24).slice(0, 2).forEach((ln, i) => txt(ax + 12, y + 38 + i * 15, ln, 13, { bold: true, c: PC.navy }));
+  y += th + 22;
+
+  /* 1 · identity and scope */
+  section(1, "Identity and scope", PC.sec1);
+  kv([
+    ["System or unit", r.system],
+    ["Accountable owner", r.accountableOwner],
+    ["Responsible organization", r.responsibleOrganization],
+    ["Operating model", r.operatingModel],
+    ["Unit of governance", u ? u.name + "  ·  " + strip(u.tag) : null],
+    ["Constituent agent profiles", r.constituentAgentProfiles],
+    ["Human oversight model", r.humanOversightModel],
+    ["Authorization envelope", "Permitted actions · prohibited actions · approved tools · approved data classes"],
+  ]);
+
+  /* 2 · risk tier */
+  section(2, "Risk tier", PC.sec1);
+  const rowsR = DIMS.map(d => [d.name, S.dims[d.key], d.cells[S.dims[d.key]], false])
+    .concat(AMPS.map(a => [a.name, S.amps[a.key], a.cells[S.amps[a.key]], true]));
+  rowsR.forEach(([name, lv, cell, isAmp], i) => {
+    const reading = cell ? cell.p.join(". ") + "." : "Not scored.";
+    const lines = wrapW(reading, 9, false, CW - 250);
+    const h = Math.max(22, lines.length * 12 + 10);
+    need(h);
+    if (i % 2 === 0) fill(M, y, CW, h, PC.panel);
+    if (i === 3) rule(M, y, W - M, PC.amp, 0.8);
+    txt(M + 10, y + 14, name, 9, { bold: true, c: PC.navy });
+    if (lv == null) txt(M + 130, y + 14, "Not scored", 8.5, { c: PC.mut });
+    else if (isAmp) chip(M + 130, y + 4, fires(lv) ? "APPLIES" : "DOES NOT APPLY", fires(lv) ? PC.amp : PC.white, fires(lv) ? PC.white : PC.mut, fires(lv) ? null : PC.line);
+    else { const t = PT[lv]; chip(M + 130, y + 4, TIERS[lv].n.toUpperCase() + " " + TIERS[lv].name.toUpperCase(), t.f, t.o, lv === 2 ? t.e : null); }
+    lines.forEach((ln, j) => txt(M + 240, y + 14 + j * 12, ln, 9, { c: PC.ink }));
+    y += h;
+  });
+  y += 12;
+  label("HOW THIS TIER WAS REACHED", PC.sec1);
+  bullets(derivation(), PC.sec1);
+
+  /* 3 · controls and assurance */
+  section(3, "Controls and assurance", PC.sec2);
+  if (f == null) { need(20); txt(M, y + 8, "Resolve the risk tier to list the controls.", 9.5, { c: PC.mut }); y += 22; }
+  else {
+    CONTROL_LAYERS.slice(0, f + 1).forEach((L, i) => {
+      const lines = wrapW(L.controls, 9, false, CW - 128);
+      const h = lines.length * 12 + 14;
+      need(h);
+      const t = PT[i];
+      chip(M, y + 2, TIERS[i].n.toUpperCase() + " " + TIERS[i].name.toUpperCase(), t.f, t.o, i === 2 ? t.e : null, 7);
+      if (i === f) txt(M, y + 28, "THIS UNIT", 6.8, { bold: true, c: PC.sec2, tc: 0.8 });
+      lines.forEach((ln, j) => txt(M + 118, y + 11 + j * 12, ln, 9));
+      y += h;
+      rule(M + 118, y - 5, W - M, PC.line, 0.5);
+    });
+    y += 6;
+    if (r.unitSpecificControls && u && u.id !== "agent") { label("ADDED BECAUSE THE UNIT IS A " + u.name.toUpperCase(), PC.sec2); bullets(r.unitSpecificControls, PC.sec2); }
+    kv([["Assurance", r.assurance], ["Record mode", passport ? "Agent passport, presented at the trust boundary" : "Agent profile, composed into the governance record"]]);
+  }
+
+  /* 4 · regulatory crosswalk */
+  section(4, "Regulatory crosswalk", PC.sec2);
+  if (!profileTouched()) {
+    need(20); para(M, y + 8, "Complete the optional agentic system profiling to map the obligations for the sectors and jurisdictions in scope.", 9.5, CW, { c: PC.mut }); y += 26;
+  } else {
+    const x = crosswalk(), hw = (CW - 10) / 2;
+    need(72);
+    fill(M, y, hw, 64, PC.panel); fill(M + hw + 10, y, hw, 64, PC.panel);
+    txt(M + 10, y + 15, "USE-CASE CLASS", 7.3, { bold: true, c: PC.mut, tc: 1 });
+    txt(M + 10, y + 33, x.useTier, 12, { bold: true, c: PC.navy });
+    para(M + 10, y + 46, x.useBasis, 7.5, hw - 20, { c: PC.mut });
+    txt(M + hw + 20, y + 15, "INSTRUMENT TIER", 7.3, { bold: true, c: PC.mut, tc: 1 });
+    txt(M + hw + 20, y + 33, f == null ? "Not resolved" : tierLabel(f), 12, { bold: true, c: f == null ? PC.mut : PT[f].e });
+    txt(M + hw + 20, y + 47, "Set by agency, impact and reach, then the amplifiers", 7.5, { c: PC.mut });
+    y += 76;
+    if (x.mandatory.length) { label("OBLIGATIONS LIKELY ENGAGED", PC.sec2); bullets(x.mandatory.map(o => o.fw + ". " + o.t + ": " + o.why), PC.sec2); }
+    if (x.safeguards.length) { label("OPERATIONAL SAFEGUARDS", PC.sec2); bullets(r.operationalSafeguards.map(o => o.control + (o.threshold ? ". " + o.threshold.label + ": " + o.threshold.value + " " + o.threshold.unit : "")), PC.sec2); }
+    if (x.frameworks.length) { label("VOLUNTARY FRAMEWORKS", PC.sec2); bullets(r.voluntaryFrameworks, PC.sec2); }
+    if (r.supplyChainControls.length) { label("FROM THE MODEL SUBSTRATE", PC.sec2); bullets(r.supplyChainControls, PC.sec2); }
+  }
+
+  /* 5 · accountability chain */
+  section(5, "Accountability chain", PC.sec3);
+  CHAIN.forEach((c, i) => {
+    need(20);
+    fill(M, y + 1, 14, 14, PC.sec3);
+    txt(M + 7, y + 11, String(i + 1), 7.5, { bold: true, c: PC.white, center: true });
+    txt(M + 22, y + 11, c, 9.5, { c: PC.ink });
+    txt(W - M, y + 11, "Named person: ______________________", 8.5, { c: PC.mut, right: true });
+    y += 20;
+  });
+  y += 10;
+
+  /* sign-off */
+  need(96);
+  y += 6;
+  box(M, y, CW, 84, PC.line, 0.8);
+  txt(M + 12, y + 18, "AUTHORIZATION", 7.8, { bold: true, c: PC.navy, tc: 1.1 });
+  const col = (CW - 24) / 3;
+  [["Accountable owner", r.accountableOwner || ""], ["Signature", ""], ["Date", ""]].forEach(([k, v], i) => {
+    const x = M + 12 + i * col;
+    if (v) txt(x, y + 46, v, 9, { c: PC.ink });
+    rule(x, y + 52, x + col - 16, PC.mut, 0.6);
+    txt(x, y + 64, k, 7.8, { c: PC.mut });
+  });
+  txt(M + 12, y + 78, "Re-assess on any material change to capability, authority, data or operating context.", 7.8, { c: PC.mut });
+  y += 90;
+
+  /* the profile, when it was completed */
+  if (profileTouched()) {
+    const pf = r.profile;
+    need(300);   /* the appendix stays together on one page */
+    section("A", "Appendix  \u00b7  Agentic system profiling", PC.mut);
+    kv([["Sector", pf.sector], ["Jurisdictions", pf.jurisdictions.join(", ")], ["Data classes", pf.dataClasses],
+        ["Agency mode", pf.agencyMode], ["Capabilities", pf.capabilities.join(", ")],
+        ["Consequential actions", pf.consequentialActions.join(", ")], ["Model substrate", pf.modelSubstrate],
+        ["Model hosting", pf.modelHostingJurisdiction], ["Data and IP commitments", pf.dataIpCommitments.join(", ")],
+        ["Delegates outside control", pf.delegatesOutsideControl ? "Yes" : "No"]]);
+  }
+
+  /* footer on every page */
+  const n = pages.length;
+  pages.forEach((o, i) => {
+    ops = o;
+    rule(M, H - 40, W - M, PC.line, 0.6);
+    txt(M, H - 27, "Advisory guidance, not legal advice. A tier is not a legal category. Crosswalk entries require legal verification.", 7, { c: PC.mut });
+    txt(W - M, H - 27, ref + "  ·  Page " + (i + 1) + " of " + n, 7.5, { c: PC.navy, right: true, bold: true });
+  });
+
+  /* assemble: catalog, page tree, two fonts, then a page and a content stream per page */
+  const objs = [];
+  objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+  objs[2] = "<< /Type /Pages /Kids [" + pages.map((_, i) => (5 + i * 2) + " 0 R").join(" ") + "] /Count " + n + " >>";
+  objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+  objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+  pages.forEach((o, i) => {
+    const content = o.join("\n");
+    objs[5 + i * 2] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + W + " " + H + "] " +
+      "/Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents " + (6 + i * 2) + " 0 R >>";
+    objs[6 + i * 2] = "<< /Length " + content.length + " >>\nstream\n" + content + "\nendstream";
+  });
+  let pdf = "%PDF-1.4\n";
+  const offsets = [];
+  for (let i = 1; i < objs.length; i++) { offsets[i] = pdf.length; pdf += i + " 0 obj\n" + objs[i] + "\nendobj\n"; }
+  const xref = pdf.length;
+  pdf += "xref\n0 " + objs.length + "\n0000000000 65535 f \n" +
+    offsets.slice(1).map(o => String(o).padStart(10, "0") + " 00000 n \n").join("") +
+    "trailer\n<< /Size " + objs.length + " /Root 1 0 R /Info << /Title (" + pdfText("Governance record: " + system) + ") /Producer (Interactive Accountability Instrument) >> >>\nstartxref\n" + xref + "\n%%EOF\n";
+  return pdf;
+}
+
+async function runExport(kind) {
+  const name = (S.system || "governance-record").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+  if (kind === "copy") {
+    try {
+      await navigator.clipboard.writeText(recordMarkdown());
+      exportMsg("Record copied.");
+    } catch (err) {
+      exportMsg("Copying is blocked here. Use one of the download buttons.");
+    }
+    return;
+  }
+
+  const downloads = window.claude && typeof window.claude.use === "function"
+    ? await window.claude.use("downloads") : null;
+  const file = kind === "json" ? { filename: name + ".json", data: JSON.stringify(recordPlain(), null, 2) }
+    : kind === "pdf" ? { filename: name + ".pdf", data: recordPDF() }
+    : { filename: name + ".md", data: recordMarkdown() };
+
+  /* opened as a plain file or from any web host: the browser saves it directly */
+  if (!downloads) {
+    const url = URL.createObjectURL(new Blob([file.data],
+      { type: kind === "json" ? "application/json" : kind === "pdf" ? "application/pdf" : "text/markdown" }));
+    const a = document.createElement("a");
+    a.href = url; a.download = file.filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    exportMsg("Saved " + file.filename + ".");
+    return;
+  }
+
+  try {
+    await downloads.save(file);
+    exportMsg("Saved " + file.filename + ".");
+  } catch (err) {
+    const code = err && err.code;
+    if (code === "declined") exportMsg("Save cancelled.");
+    else if (code === "rate_limited") exportMsg("A save prompt is already open.");
+    else exportMsg("That file could not be saved here. Use Copy to clipboard.");
+  }
+}
+
+/* ---------- go --------------------------------------------- */
+
+render();
+
+/* a deep link lands on the step it names */
+if (VIEW === "instrument" && location.hash.length > 1) {
+  const el = document.getElementById(location.hash.slice(1));
+  if (el) requestAnimationFrame(() => el.scrollIntoView({ block: "start" }));
+}
+
+</script>
+</body>
+</html>
